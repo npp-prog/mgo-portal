@@ -14,12 +14,12 @@ The administrator can filter pending, approved and denied requests. The latest d
 
 ## Required setup — complete before staff use
 
-The package contains working integration code, but no Firebase project credentials or designated administrator have been supplied. Login remains disabled until you configure your project. Use a dedicated Firebase project for this portal; the supplied rules deny all unrelated collections, so do not overwrite an existing application's rules without merging and reviewing them.
+The public web configuration for Firebase project `mgo-portal` is already filled in from your supplied screenshot. A first administrator has not yet been designated. Google provider settings, authorized domains, Firestore rules, the directory and the administrator record still need to be configured in the live Firebase project. Use a dedicated Firebase project for this portal; the supplied rules deny all unrelated collections, so do not overwrite an existing application's rules without merging and reviewing them.
 
 ### 1. Firebase project and Google provider
 
-- Create/select your Firebase project and register a **Web app** in Project settings.
-- Copy its public Firebase web configuration into `firebase-config.js`, replacing all `REPLACE_ME` values. `apiKey`, `authDomain`, `projectId` and `appId` are required by this package. The web configuration is intended to be public; never put a service-account/private key in the website.
+- Open your existing Firebase project **mgo-portal** and its registered **mgo-portal** Web app.
+- The public Firebase web configuration is already entered in `firebase-config.js`; compare it with the console if troubleshooting sign-in. `apiKey`, `authDomain`, `projectId` and `appId` are required by this package. The web configuration is intended to be public; never put a service-account/private key in the website.
 - In Authentication, enable **Google** as the only sign-in provider and choose the project support email. Disable other providers for this dedicated project.
 - In Authentication settings, add the portal's exact hostname to **Authorized domains**, for example `npp-prog.github.io` and your custom domain if used. Add `localhost` separately for local testing. Enter hostnames without a path or `https://`.
 - Create the default Cloud Firestore database in production mode.
@@ -91,4 +91,4 @@ Change the trusted `portal/directory` document in Firestore to change live links
 - JavaScript syntax checks passed.
 - Seven Firestore emulator tests passed, including self-approval prevention, denied access, administrator review, and revocation. The test run used Firebase CLI 14.22.0 with the available Java 17 runtime; the packaged CLI 15 requires Java 21 or newer for future runs.
 - Actual Chromium checks passed for the login screen at 1440px, 390px and 320px widths; the seal loaded, there were no JavaScript errors, and protected sections stayed hidden. Directory layout was separately checked with fixture content at desktop/tablet/phone widths.
-- Production Firebase configuration, Google OAuth and end-to-end live login remain untested until the project is configured. No live Firebase rules or administrator records have been deployed by this delivery.
+- The supplied public Firebase configuration has passed syntax and field consistency checks. Live Firebase project settings, Google OAuth and end-to-end login remain unverified. No live Firebase rules or administrator records have been deployed by this delivery.
