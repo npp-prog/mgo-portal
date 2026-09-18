@@ -1,6 +1,6 @@
 # MGO Portal
 
-A minimalist blue systems directory for the Municipal Government of Candoni. Plain HTML and CSS; no installation, JavaScript, API keys, external fonts or build step required. Works locally and on GitHub Pages, including repository subpaths.
+A light ERP-style application launcher for the Municipal Government of Candoni. Plain HTML and CSS; no installation, JavaScript, API keys, external fonts or build step required. Works locally and on GitHub Pages, including repository subpaths.
 
 ## Publish on GitHub Pages
 
@@ -31,10 +31,10 @@ Edit `index.html`. Each system is one `<a class="app"> ... </a>` block inside `<
 - Set its `href` to the full HTTPS address.
 - Edit the system title, description, domain and number/code.
 - Give the heading a unique `id` and match it in the card's `aria-labelledby`.
-- Update `04 systems` to the new total.
+- Update `4 applications` to the new total.
 - Keep `target="_blank"` and `rel="noopener noreferrer"` to open safely in a new tab.
 
-Brand colors are in the CSS `:root` block and `.sidebar` rule. The layout automatically changes from two columns to one on narrow screens. Keyboard focus, a skip link and reduced-motion preferences are supported.
+Brand colors are in the CSS `:root` block. The page uses a white top header, pale-blue background and four application cards with no sidebar or navigation menu. The layout changes from four columns on desktop to two on tablets and one on phones. Keyboard focus, a skip link and reduced-motion preferences are supported.
 
 ## Scope
 
