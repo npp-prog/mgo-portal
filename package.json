@@ -1,0 +1,8 @@
+{
+  "name":"mgo-portal", "private":true, "type":"module",
+  "scripts":{
+    "bootstrap":"node scripts/bootstrap.mjs",
+    "test:rules":"firebase emulators:exec --only firestore --project demo-mgo-portal \"node --test tests/rules.test.mjs\""
+  },
+  "devDependencies":{"firebase-admin":"^13.0.0","firebase":"12.19.0","@firebase/rules-unit-testing":"^5.0.0","firebase-tools":"^15.0.0"}
+}

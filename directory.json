@@ -1,0 +1,32 @@
+{
+  "modules": [
+    {
+      "id": "property",
+      "title": "Property management",
+      "description": "Property records and asset accountability.",
+      "url": "https://pms.mgocandoni.com/",
+      "code": "PMS"
+    },
+    {
+      "id": "inventory",
+      "title": "Inventory management",
+      "description": "Supplies, stock records and inventory.",
+      "url": "https://ims.mgocandoni.com/",
+      "code": "IMS"
+    },
+    {
+      "id": "accounting",
+      "title": "Accounting Books Online",
+      "description": "Accounting records and financial reports.",
+      "url": "https://abo.mgocandoni.com/",
+      "code": "ABO"
+    },
+    {
+      "id": "documents",
+      "title": "Document management",
+      "description": "Document routing and records management.",
+      "url": "https://uat.dms.egovsystemsph.com/",
+      "code": "DMS"
+    }
+  ]
+}
