@@ -55,3 +55,18 @@ test('denied user cannot reset request; revoked admin loses administration',asyn
  await env.withSecurityRulesDisabled(c=>updateDoc(doc(c.firestore(),'admins','admin'),{enabled:false}));
  await assertFails(getDocs(collection(user('admin'),'users')));
 });
+
+test('only administrator can initialize the four-module directory; cannot overwrite it',async()=>{
+ const seed=JSON.parse(await readFile(new URL('../directory.json',import.meta.url),'utf8'));
+ await env.withSecurityRulesDisabled(c=>deleteDoc(doc(c.firestore(),'portal','directory')));
+ for(const uid of ['pending','approved','denied'])await assertFails(setDoc(doc(user(uid),'portal','directory'),seed));
+ await assertFails(setDoc(doc(env.unauthenticatedContext().firestore(),'portal','directory'),seed));
+ const db=user('admin');
+ await assertFails(setDoc(doc(db,'portal','directory'),{modules:[]}));
+ const bad=structuredClone(seed);bad.modules[0].url='javascript:alert(1)';
+ await assertFails(setDoc(doc(db,'portal','directory'),bad));
+ await assertSucceeds(setDoc(doc(db,'portal','directory'),seed));
+ await assertSucceeds(getDoc(doc(user('approved'),'portal','directory')));
+ await assertFails(setDoc(doc(db,'portal','directory'),seed));
+ await assertFails(deleteDoc(doc(db,'portal','directory')));
+});

@@ -4,7 +4,7 @@ const $ = id => document.getElementById(id);
 const show = (id, value) => { $(id).hidden = !value; };
 const error = message => { $('error-message').textContent = message; show('error-message', Boolean(message)); };
 function gate(title, message) {
-  show('gate', true); show('portal', false); $('apps').replaceChildren();
+  show('setup-applications', false); show('gate', true); show('portal', false); $('apps').replaceChildren();
   $('gate-title').textContent = title; $('gate-message').textContent = message;
 }
 function friendly(e) {
@@ -83,7 +83,7 @@ if (Object.values(firebaseConfig).some(v => !v || v.includes('REPLACE_ME'))) {
   }
   function renderRequests() {
     $('requests').replaceChildren();
-    const rows = requests.filter(r => r.status === $('status-filter').value);
+    const rows = requests.filter(r => r.uid !== user.uid && r.status === $('status-filter').value);
     $('admin-message').textContent = rows.length ? `${rows.length} ${$('status-filter').value} account(s)` : 'No accounts in this category.';
     rows.sort((a,b) => (a.createdAt?.seconds || 0) - (b.createdAt?.seconds || 0));
     for (const row of rows) {
@@ -97,8 +97,7 @@ if (Object.values(firebaseConfig).some(v => !v || v.includes('REPLACE_ME'))) {
         const review = document.createElement('p'); review.textContent = `Last decision: ${row.status} · ${row.reviewedAt.toDate().toLocaleString()}`; person.append(review);
       }
       const actions = document.createElement('div'); actions.className = 'request-actions';
-      if (row.uid === user.uid) { const own = document.createElement('span'); own.textContent = 'Your account'; actions.append(own); }
-      else for (const status of ['approved','denied']) {
+      for (const status of ['approved','denied']) {
         if (row.status === status) continue;
         const button = document.createElement('button'); button.type = 'button'; button.className = status === 'approved' ? 'primary' : 'secondary';
         button.textContent = status === 'approved' ? 'Approve' : row.status === 'approved' ? 'Revoke access' : 'Deny';
@@ -123,6 +122,28 @@ if (Object.values(firebaseConfig).some(v => !v || v.includes('REPLACE_ME'))) {
     }
   }
   $('status-filter').onchange = renderRequests;
+  $('setup-applications').onclick = async () => {
+    if (adminState !== true || !user) return;
+    const myEpoch = epoch;
+    const button = $('setup-applications'); button.disabled = true; error('');
+    try {
+      const response = await fetch('./directory.json', {cache:'no-store'});
+      if (!response.ok) throw new Error('seed-unavailable');
+      const directory = await response.json();
+      if (myEpoch !== epoch || adminState !== true) return;
+      await F.runTransaction(db, async tx => {
+        const ref = F.doc(db,'portal','directory');
+        const existing = await tx.get(ref);
+        // Never replace a directory already configured by another administrator.
+        if (!existing.exists()) tx.set(ref,directory);
+      });
+    } catch(e) {
+      if (myEpoch === epoch) error(e.code === 'permission-denied'
+        ? 'Setup was blocked. Publish the updated firestore.rules file in Firebase, then try again.'
+        : e.message === 'seed-unavailable' ? 'The application list could not be loaded. Upload directory.json beside index.html and try again.'
+        : friendly(e));
+    } finally { button.disabled = false; }
+  };
   function reconcile(myEpoch) {
     if (myEpoch !== epoch || !user) return;
     if (adminState === null || userState === null) return;
@@ -147,7 +168,14 @@ if (Object.values(firebaseConfig).some(v => !v || v.includes('REPLACE_ME'))) {
       directoryStop = F.onSnapshot(F.doc(db,'portal','directory'),{includeMetadataChanges:true},snapshot => {
         if (myEpoch !== epoch) return;
         if (snapshot.metadata.fromCache) { gate('Connecting securely','Your access will be checked when the connection is restored.'); return; }
-        if (!snapshot.exists()) { gate('Applications are not configured','Please contact the portal administrator to finish setup.'); return; }
+        if (!snapshot.exists()) {
+          gate('Set up your applications', adminState === true
+            ? 'Load Property Management, Inventory Management, Accounting Books Online and Document Management into your portal.'
+            : 'The administrator still needs to configure the applications.');
+          show('setup-applications', adminState === true);
+          return;
+        }
+        show('setup-applications', false);
         renderDirectory(snapshot.data()); show('gate',false); show('portal',true);
       },e => { if(myEpoch === epoch) fail(e); });
     }

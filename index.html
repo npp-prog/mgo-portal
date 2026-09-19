@@ -90,6 +90,7 @@
           <h1 id="gate-title">Sign in to MGO Portal</h1>
           <p id="gate-message">Use your Google account to access municipal applications. First-time access requires administrator approval.</p>
           <button id="google-sign-in" class="primary" type="button" disabled>Continue with Google</button>
+          <button id="setup-applications" class="primary" type="button" hidden>Set up applications</button>
           <p class="note" id="connection-message" role="status">Connecting securely…</p>
         </section>
         <p id="error-message" class="error" role="alert" hidden></p>
@@ -102,7 +103,7 @@
         </section>
         <section id="admin" hidden aria-labelledby="admin-title">
           <div class="section-head"><h2 id="admin-title">Access approvals</h2><label>Show <select id="status-filter"><option value="pending">Pending</option><option value="approved">Approved</option><option value="denied">Denied</option></select></label></div>
-          <p class="note">Review Google account requests below. Denying an approved user revokes portal access.</p>
+          <p class="note">You are signed in as an administrator. Your account does not need approval. Review other users below.</p>
           <p id="admin-message" role="status"></p>
           <div id="requests" class="requests"></div>
         </section>

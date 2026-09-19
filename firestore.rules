@@ -40,9 +40,20 @@ service cloud.firestore {
         && request.resource.data.reviewedBy == request.auth.uid;
       allow delete: if false;
     }
+    function validModule(m) {
+      return m is map && m.keys().hasAll(['id','title','description','url','code'])
+        && m.keys().hasOnly(['id','title','description','url','code'])
+        && m.id is string && m.title is string && m.description is string
+        && m.code is string && m.url is string && m.url.matches('https://.+');
+    }
     match /portal/{document} {
       allow get: if document == 'directory' && (admin() || approved());
-      allow list, create, update, delete: if false;
+      allow create: if document == 'directory' && admin()
+        && request.resource.data.keys().hasOnly(['modules'])
+        && request.resource.data.modules is list && request.resource.data.modules.size() == 4
+        && validModule(request.resource.data.modules[0]) && validModule(request.resource.data.modules[1])
+        && validModule(request.resource.data.modules[2]) && validModule(request.resource.data.modules[3]);
+      allow list, update, delete: if false;
     }
     match /{document=**} { allow read, write: if false; }
   }
