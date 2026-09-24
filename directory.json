@@ -15,11 +15,11 @@
       "code": "IMS"
     },
     {
-      "id": "accounting",
-      "title": "Accounting Books Online",
+      "id": "financial records",
+      "title": "Candoni Books Online",
       "description": "Accounting records and financial reports.",
-      "url": "https://abo.mgocandoni.com/",
-      "code": "ABO"
+      "url": "https://cbo.mgocandoni.com/",
+      "code": "CBO"
     },
     {
       "id": "documents",
