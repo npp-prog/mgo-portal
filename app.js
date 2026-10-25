@@ -2,6 +2,13 @@ import { firebaseConfig } from './firebase-config.js';
 import { icons } from './icons.js';
 const $ = id => document.getElementById(id);
 const show = (id, value) => { $(id).hidden = !value; };
+const plural = (n, word) => `${n} ${word}${n === 1 ? '' : 's'}`;
+// Older directories were seeded with non-matching ids; fall back to the module code.
+const iconAliases = { PMS:'property', PIMS:'property', IMS:'inventory', CBO:'accounting', DMS:'documents', TOSCAN:'toscan', FTS:'fts' };
+// Names give two initials; an email address gives the first letter of its local part.
+const initials = text => (text || '?').includes('@') ? text[0].toUpperCase()
+  : text.trim().split(/\s+/).slice(0,2).map(w => w[0].toUpperCase()).join('');
+const arrow = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>';
 const error = message => { $('error-message').textContent = message; show('error-message', Boolean(message)); };
 function gate(title, message) {
   show('setup-applications', false); show('gate', true); show('portal', false); $('apps').replaceChildren();
@@ -30,7 +37,7 @@ if (Object.values(firebaseConfig).some(v => !v || v.includes('REPLACE_ME'))) {
   const provider = new A.GoogleAuthProvider();
   provider.setCustomParameters({ prompt: 'select_account' });
   await A.setPersistence(auth, A.browserSessionPersistence);
-  let epoch = 0, user = null, userState = null, adminState = null;
+  let epoch = 0, user = null, userState = null, adminState = null, filter = 'pending';
   let userStop, adminStop, directoryStop, requestsStop, requests = [];
   const stop = fn => { if (fn) fn(); };
   function closeDirectory() {
@@ -40,6 +47,8 @@ if (Object.values(firebaseConfig).some(v => !v || v.includes('REPLACE_ME'))) {
   function closeAdmin() {
     stop(requestsStop); requestsStop = null; requests = [];
     $('requests').replaceChildren(); show('admin', false);
+    $('request-search').value = ''; show('pending-badge', false); filter = 'pending';
+    document.title = 'MGO Portal · Municipality of Candoni';
   }
   function fail(e) {
     closeDirectory(); closeAdmin();
@@ -68,41 +77,64 @@ if (Object.values(firebaseConfig).some(v => !v || v.includes('REPLACE_ME'))) {
       card.setAttribute('aria-describedby', 'new-tab');
       const top = document.createElement('div'); top.className = 'card-top';
       const icon = document.createElement('span'); icon.className = 'icon';
-      icon.innerHTML = icons[module.id] || icons.documents; // Local, trusted SVG only.
+      icon.innerHTML = icons[module.id] || icons[iconAliases[module.code]] || icons.documents; // Local, trusted SVG only.
       const code = document.createElement('span'); code.className = 'code'; code.textContent = module.code;
       top.append(icon, code);
       const title = document.createElement('h3'); title.textContent = module.title;
-      const desc = document.createElement('p'); desc.className = 'description'; desc.textContent = module.description;
+      const desc = document.createElement('p'); desc.className = 'description'; desc.textContent = module.description; desc.hidden = !module.description;
       const bottom = document.createElement('div'); bottom.className = 'card-bottom';
       const domain = document.createElement('span'); domain.className = 'domain'; domain.textContent = url.hostname;
-      const launch = document.createElement('span'); launch.className = 'launch'; launch.textContent = '↗'; launch.setAttribute('aria-hidden','true');
+      const launch = document.createElement('span'); launch.className = 'launch'; launch.setAttribute('aria-hidden','true');
+      launch.innerHTML = `Open ${arrow}`; // Local, trusted SVG only.
       bottom.append(domain, launch); card.append(top, title, desc, bottom); fragment.append(card);
     }
     $('apps').replaceChildren(fragment);
-    document.querySelector('.section-head > span').textContent = `${$('apps').childElementCount} applications`;
+    $('app-count').textContent = $('apps').childElementCount;
   }
+  const statusLabels = { pending:'Pending', approved:'Approved', denied:'Denied' };
   function renderRequests() {
     $('requests').replaceChildren();
-    const rows = requests.filter(r => r.uid !== user.uid && r.status === $('status-filter').value);
-    $('admin-message').textContent = rows.length ? `${rows.length} ${$('status-filter').value} account(s)` : 'No accounts in this category.';
+    const others = requests.filter(r => r.uid !== user.uid);
+    const counts = { pending:0, approved:0, denied:0 };
+    for (const r of others) if (r.status in counts) counts[r.status]++;
+    for (const tab of document.querySelectorAll('.tab')) {
+      const count = tab.querySelector('.tab-count'), n = counts[tab.dataset.status];
+      count.textContent = n; count.classList.toggle('has', n > 0);
+      tab.setAttribute('aria-pressed', String(tab.dataset.status === filter));
+    }
+    $('pending-badge').textContent = counts.pending; show('pending-badge', counts.pending > 0);
+    document.title = counts.pending ? `(${counts.pending}) MGO Portal · Municipality of Candoni` : 'MGO Portal · Municipality of Candoni';
+    const query = $('request-search').value.trim().toLowerCase();
+    const rows = others.filter(r => r.status === filter
+      && (!query || `${r.name || ''} ${r.email || ''}`.toLowerCase().includes(query)));
+    $('admin-message').textContent = rows.length
+      ? `${plural(rows.length, `${filter} account`)}${query ? ' matching your search' : ''}`
+      : query ? 'No accounts match your search.' : 'No accounts in this category.';
     rows.sort((a,b) => (a.createdAt?.seconds || 0) - (b.createdAt?.seconds || 0));
     for (const row of rows) {
-      const item = document.createElement('article'); item.className = 'request';
+      const item = document.createElement('li'); item.className = 'request';
       const person = document.createElement('div'); person.className = 'request-person';
-      const name = document.createElement('strong'); name.textContent = row.name || row.email;
-      const email = document.createElement('p'); email.textContent = row.email;
+      const avatar = document.createElement('span'); avatar.className = 'avatar'; avatar.setAttribute('aria-hidden','true');
+      avatar.textContent = initials(row.name || row.email);
+      const text = document.createElement('div');
+      const name = document.createElement('span'); name.className = 'request-name'; name.textContent = row.name || row.email;
+      const pill = document.createElement('span'); pill.className = `pill ${row.status}`; pill.textContent = statusLabels[row.status] || row.status;
       const requested = document.createElement('p'); requested.textContent = row.createdAt?.toDate ? `Requested ${row.createdAt.toDate().toLocaleString()}` : 'Request time unavailable';
-      person.append(name,email,requested);
+      text.append(name, pill);
+      if (row.name) { const email = document.createElement('p'); email.textContent = row.email; text.append(email); }
+      text.append(requested);
       if (row.reviewedAt?.toDate) {
-        const review = document.createElement('p'); review.textContent = `Last decision: ${row.status} · ${row.reviewedAt.toDate().toLocaleString()}`; person.append(review);
+        const review = document.createElement('p'); review.textContent = `Last decision: ${row.status} · ${row.reviewedAt.toDate().toLocaleString()}`; text.append(review);
       }
+      person.append(avatar, text);
       const actions = document.createElement('div'); actions.className = 'request-actions';
       for (const status of ['approved','denied']) {
         if (row.status === status) continue;
-        const button = document.createElement('button'); button.type = 'button'; button.className = status === 'approved' ? 'primary' : 'secondary';
+        const button = document.createElement('button'); button.type = 'button'; button.className = status === 'approved' ? 'primary' : 'danger';
         button.textContent = status === 'approved' ? 'Approve' : row.status === 'approved' ? 'Revoke access' : 'Deny';
         button.onclick = async () => {
-          if (!confirm(`${button.textContent} for ${row.email}?`)) return;
+          const verb = status === 'approved' ? 'Approve portal access' : row.status === 'approved' ? 'Revoke portal access' : 'Deny portal access';
+          if (!confirm(`${verb} for ${row.email}?`)) return;
           actions.querySelectorAll('button').forEach(b => b.disabled = true); error('');
           try {
             // Transaction prevents overwriting another administrator's newer decision.
@@ -121,7 +153,8 @@ if (Object.values(firebaseConfig).some(v => !v || v.includes('REPLACE_ME'))) {
       item.append(person,actions); $('requests').append(item);
     }
   }
-  $('status-filter').onchange = renderRequests;
+  for (const tab of document.querySelectorAll('.tab')) tab.onclick = () => { filter = tab.dataset.status; renderRequests(); };
+  $('request-search').oninput = renderRequests;
   $('setup-applications').onclick = async () => {
     if (adminState !== true || !user) return;
     const myEpoch = epoch;
@@ -170,13 +203,17 @@ if (Object.values(firebaseConfig).some(v => !v || v.includes('REPLACE_ME'))) {
         if (snapshot.metadata.fromCache) { gate('Connecting securely','Your access will be checked when the connection is restored.'); return; }
         if (!snapshot.exists()) {
           gate('Set up your applications', adminState === true
-            ? 'Load Property Management, Inventory Management, Accounting Books Online and Document Management into your portal.'
+            ? 'Load the municipal applications listed in directory.json into your portal.'
             : 'The administrator still needs to configure the applications.');
           show('setup-applications', adminState === true);
           return;
         }
         show('setup-applications', false);
         renderDirectory(snapshot.data()); show('gate',false); show('portal',true);
+        const first = (user.displayName || '').trim().split(/\s+/)[0], hour = new Date().getHours();
+        const greeting = hour < 12 ? 'Good morning' : hour < 18 ? 'Good afternoon' : 'Good evening';
+        $('portal-title').textContent = first ? `${greeting}, ${first}` : greeting;
+        $('today').textContent = new Date().toLocaleDateString(undefined, { weekday:'long', year:'numeric', month:'long', day:'numeric' });
       },e => { if(myEpoch === epoch) fail(e); });
     }
   }
@@ -186,6 +223,8 @@ if (Object.values(firebaseConfig).some(v => !v || v.includes('REPLACE_ME'))) {
     userState = null; adminState = null; user = nextUser; error('');
     show('account',Boolean(user)); show('google-sign-in',!user);
     $('account-email').textContent = user?.email || '';
+    $('account-name').textContent = user?.displayName || '';
+    $('account-avatar').textContent = user ? initials(user.displayName || user.email) : '';
     if (!user) { gate('Sign in to MGO Portal','Use your Google account to access municipal applications. First-time access requires administrator approval.'); return; }
     gate('Checking access','Please wait while we verify your Google account.');
     try {

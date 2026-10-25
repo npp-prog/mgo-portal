@@ -46,13 +46,19 @@ service cloud.firestore {
         && m.id is string && m.title is string && m.description is string
         && m.code is string && m.url is string && m.url.matches('https://.+');
     }
+    // Rules have no loops, so each of the up to 12 positions is checked explicitly.
+    function validAt(ms, i) { return ms.size() <= i || validModule(ms[i]); }
+    function validModules(ms) {
+      return ms is list && ms.size() >= 1 && ms.size() <= 12
+        && validAt(ms,0) && validAt(ms,1) && validAt(ms,2) && validAt(ms,3)
+        && validAt(ms,4) && validAt(ms,5) && validAt(ms,6) && validAt(ms,7)
+        && validAt(ms,8) && validAt(ms,9) && validAt(ms,10) && validAt(ms,11);
+    }
     match /portal/{document} {
       allow get: if document == 'directory' && (admin() || approved());
       allow create: if document == 'directory' && admin()
         && request.resource.data.keys().hasOnly(['modules'])
-        && request.resource.data.modules is list && request.resource.data.modules.size() == 4
-        && validModule(request.resource.data.modules[0]) && validModule(request.resource.data.modules[1])
-        && validModule(request.resource.data.modules[2]) && validModule(request.resource.data.modules[3]);
+        && validModules(request.resource.data.modules);
       allow list, update, delete: if false;
     }
     match /{document=**} { allow read, write: if false; }

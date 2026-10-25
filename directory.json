@@ -5,7 +5,7 @@
       "title": "Property management",
       "description": "Property records and asset accountability.",
       "url": "https://pms.mgocandoni.com/",
-      "code": "PMS"
+      "code": "PIMS"
     },
     {
       "id": "inventory",
@@ -15,7 +15,7 @@
       "code": "IMS"
     },
     {
-      "id": "financial records",
+      "id": "accounting",
       "title": "Candoni Books Online",
       "description": "Accounting records and financial reports.",
       "url": "https://cbo.mgocandoni.com/",
@@ -27,6 +27,20 @@
       "description": "Document routing and records management.",
       "url": "https://uat.dms.egovsystemsph.com/",
       "code": "DMS"
+    },
+    {
+      "id": "toscan",
+      "title": "TOSCAN",
+      "description": "",
+      "url": "https://toscan.mgocandoni.com/",
+      "code": "TOSCAN"
+    },
+    {
+      "id": "fts",
+      "title": "FTS",
+      "description": "",
+      "url": "https://fts.mgocandoni.com/",
+      "code": "FTS"
     }
   ]
 }

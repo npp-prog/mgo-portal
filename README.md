@@ -48,7 +48,7 @@ Local preview must use HTTP, not a `file://` URL: run `python -m http.server 800
 
 1. In Firebase Authentication → Users, find **npp@mgocandoniaccounting.org** and copy that account’s UID. Verify the exact email before proceeding.
 2. In Firestore, create collection `admins`, document ID equal to that UID, with a boolean field `enabled` set to `true`.
-3. Reload the portal and click **Set up applications**. This creates `portal/directory` with the four supplied applications, including **Accounting Books Online**. Only an authenticated administrator can perform this first-time setup; existing directory data is never overwritten. Publish the UPDATED `firestore.rules` before clicking this button.
+3. Reload the portal and click **Set up applications**. This creates `portal/directory` with the applications listed in `directory.json` (PIMS, IMS, CBO, DMS, TOSCAN and FTS). Only an authenticated administrator can perform this first-time setup; existing directory data is never overwritten. Publish the UPDATED `firestore.rules` before clicking this button.
 4. Reload the portal. That administrator can now approve or deny ordinary staff from the application page. The administrator's own user request can remain pending in Firestore: administrator authorization is independent of that status. The portal excludes your own account from the review queue.
 
 **Script option for a project operator:**
@@ -56,7 +56,7 @@ Local preview must use HTTP, not a `file://` URL: run `python -m http.server 800
 - Install Node.js 22 or newer and run `npm install` in this folder.
 - Authenticate locally with Google Application Default Credentials for an operator with appropriate Firebase Authentication and Firestore permissions, for example using `gcloud auth application-default login` with your own authorized project account. Alternatively point `GOOGLE_APPLICATION_CREDENTIALS` to a service-account JSON stored OUTSIDE the repository.
 - Run `npm run bootstrap` with no arguments. It targets project `mgo-portal` and resolves **npp@mgocandoniaccounting.org** to its Firebase UID automatically. That account must already have signed in to the portal once.
-- The script verifies the exact administrator email, matching Google provider email, verified email and enabled account, creates the administrator record, and writes the four directory entries. Running it again overwrites the directory with the current `directory.json` values.
+- The script verifies the exact administrator email, matching Google provider email, verified email and enabled account, creates the administrator record, and writes the directory entries from `directory.json`. Running it again overwrites the directory with the current `directory.json` values.
 - Do not upload service-account credentials, `.env` files, `node_modules`, or debug logs to GitHub.
 
 Administrator roles are deliberately not editable through the browser. Only a trusted Firebase project operator can provision/remove administrators. To revoke an administrator, remove their `admins/{uid}` document and set their `users/{uid}` status to `denied` through the trusted console as well if they were also approved as an ordinary user. Requests for another administrator cannot be changed by client code.
@@ -84,7 +84,7 @@ The portal uses session-scoped authentication persistence and Firestore's in-mem
 
 ## Edit applications
 
-Change the trusted `portal/directory` document in Firestore to change live links/titles; do not insert credentials in URLs. `directory.json` is the bootstrap seed, not the live data source. If adding a new module ID, add an icon in `icons.js` or it will use the document icon. The UI renders text safely and accepts HTTPS links only.
+Change the trusted `portal/directory` document in Firestore to change live links/titles; do not insert credentials in URLs. `directory.json` is the bootstrap seed, not the live data source. The directory may hold 1–12 modules. If adding a new module ID, add an icon in `icons.js` or it will use the document icon. The UI renders text safely and accepts HTTPS links only.
 
 ## Official references
 
