@@ -48,7 +48,7 @@ Local preview must use HTTP, not a `file://` URL: run `python -m http.server 800
 
 1. In Firebase Authentication → Users, find **npp@mgocandoniaccounting.org** and copy that account’s UID. Verify the exact email before proceeding.
 2. In Firestore, create collection `admins`, document ID equal to that UID, with a boolean field `enabled` set to `true`.
-3. Reload the portal and click **Set up applications**. This creates `portal/directory` with the applications listed in `directory.json` (PIMS, IMS, CBO, DMS, TOSCAN and FTS). Only an authenticated administrator can perform this first-time setup; existing directory data is never overwritten. Publish the UPDATED `firestore.rules` before clicking this button.
+3. Reload the portal and click **Set up applications**. This creates `portal/directory` with the applications listed in `directory.json` (PIMS, CBO, DMS, TOSCAN, FTS and Online collections). Only an authenticated administrator can perform this first-time setup; existing directory data is never overwritten. Publish the UPDATED `firestore.rules` before clicking this button.
 4. Reload the portal. That administrator can now approve or deny ordinary staff from the application page. The administrator's own user request can remain pending in Firestore: administrator authorization is independent of that status. The portal excludes your own account from the review queue.
 
 **Script option for a project operator:**
@@ -78,7 +78,7 @@ For automated Firestore rules tests, install dependencies plus Java 21 or newer,
 
 Firestore rules, not the client UI, enforce the pending/approved/admin permissions. The client requests the directory only after verified approval. A first Google sign-in DOES create a Firebase Authentication account; approval controls portal authorization, not the creation of that identity.
 
-The GitHub Pages HTML, scripts, seal and seed file are public static files. Public module URLs may be read from source, bookmarked, or opened directly. This portal cannot revoke access granted separately by PMS, IMS, Accounting Books Online or DMS. Each linked system must enforce its own authentication and authorization. This package does not add cross-system single sign-on or modify those systems.
+The GitHub Pages HTML, scripts, seal and seed file are public static files. Public module URLs may be read from source, bookmarked, or opened directly. This portal cannot revoke access granted separately by the linked systems (PIMS, CBO, DMS, TOSCAN, FTS or Online collections). Each linked system must enforce its own authentication and authorization. This package does not add cross-system single sign-on or modify those systems.
 
 The portal uses session-scoped authentication persistence and Firestore's in-memory cache. It fails closed when verified access cannot be loaded. Revocation is enforced on subsequent Firestore requests and reflected by live listeners; already viewed information or an already opened external application cannot be retracted by this portal.
 
