@@ -2,6 +2,9 @@ import { firebaseConfig } from './firebase-config.js';
 import { icons } from './icons.js';
 const $ = id => document.getElementById(id);
 const show = (id, value) => { $(id).hidden = !value; };
+const plural = (n, word) => `${n} ${word}${n === 1 ? '' : 's'}`;
+// Older directories were seeded with non-matching ids; fall back to the module code.
+const iconAliases = { PMS:'property', IMS:'inventory', CBO:'accounting', DMS:'documents' };
 const error = message => { $('error-message').textContent = message; show('error-message', Boolean(message)); };
 function gate(title, message) {
   show('setup-applications', false); show('gate', true); show('portal', false); $('apps').replaceChildren();
@@ -40,6 +43,8 @@ if (Object.values(firebaseConfig).some(v => !v || v.includes('REPLACE_ME'))) {
   function closeAdmin() {
     stop(requestsStop); requestsStop = null; requests = [];
     $('requests').replaceChildren(); show('admin', false);
+    $('request-search').value = ''; show('pending-badge', false);
+    document.title = 'MGO Portal · Municipality of Candoni';
   }
   function fail(e) {
     closeDirectory(); closeAdmin();
@@ -68,7 +73,7 @@ if (Object.values(firebaseConfig).some(v => !v || v.includes('REPLACE_ME'))) {
       card.setAttribute('aria-describedby', 'new-tab');
       const top = document.createElement('div'); top.className = 'card-top';
       const icon = document.createElement('span'); icon.className = 'icon';
-      icon.innerHTML = icons[module.id] || icons.documents; // Local, trusted SVG only.
+      icon.innerHTML = icons[module.id] || icons[iconAliases[module.code]] || icons.documents; // Local, trusted SVG only.
       const code = document.createElement('span'); code.className = 'code'; code.textContent = module.code;
       top.append(icon, code);
       const title = document.createElement('h3'); title.textContent = module.title;
@@ -79,20 +84,32 @@ if (Object.values(firebaseConfig).some(v => !v || v.includes('REPLACE_ME'))) {
       bottom.append(domain, launch); card.append(top, title, desc, bottom); fragment.append(card);
     }
     $('apps').replaceChildren(fragment);
-    document.querySelector('.section-head > span').textContent = `${$('apps').childElementCount} applications`;
+    $('app-count').textContent = plural($('apps').childElementCount, 'application');
   }
+  const statusLabels = { pending:'Pending', approved:'Approved', denied:'Denied' };
   function renderRequests() {
     $('requests').replaceChildren();
-    const rows = requests.filter(r => r.uid !== user.uid && r.status === $('status-filter').value);
-    $('admin-message').textContent = rows.length ? `${rows.length} ${$('status-filter').value} account(s)` : 'No accounts in this category.';
+    const others = requests.filter(r => r.uid !== user.uid);
+    const counts = { pending:0, approved:0, denied:0 };
+    for (const r of others) if (r.status in counts) counts[r.status]++;
+    for (const option of $('status-filter').options) option.textContent = `${statusLabels[option.value]} (${counts[option.value]})`;
+    $('pending-badge').textContent = counts.pending; show('pending-badge', counts.pending > 0);
+    document.title = counts.pending ? `(${counts.pending}) MGO Portal · Municipality of Candoni` : 'MGO Portal · Municipality of Candoni';
+    const filter = $('status-filter').value, query = $('request-search').value.trim().toLowerCase();
+    const rows = others.filter(r => r.status === filter
+      && (!query || `${r.name || ''} ${r.email || ''}`.toLowerCase().includes(query)));
+    $('admin-message').textContent = rows.length
+      ? `${plural(rows.length, `${filter} account`)}${query ? ' matching your search' : ''}`
+      : query ? 'No accounts match your search.' : 'No accounts in this category.';
     rows.sort((a,b) => (a.createdAt?.seconds || 0) - (b.createdAt?.seconds || 0));
     for (const row of rows) {
       const item = document.createElement('article'); item.className = 'request';
       const person = document.createElement('div'); person.className = 'request-person';
       const name = document.createElement('strong'); name.textContent = row.name || row.email;
-      const email = document.createElement('p'); email.textContent = row.email;
       const requested = document.createElement('p'); requested.textContent = row.createdAt?.toDate ? `Requested ${row.createdAt.toDate().toLocaleString()}` : 'Request time unavailable';
-      person.append(name,email,requested);
+      person.append(name);
+      if (row.name) { const email = document.createElement('p'); email.textContent = row.email; person.append(email); }
+      person.append(requested);
       if (row.reviewedAt?.toDate) {
         const review = document.createElement('p'); review.textContent = `Last decision: ${row.status} · ${row.reviewedAt.toDate().toLocaleString()}`; person.append(review);
       }
@@ -102,7 +119,8 @@ if (Object.values(firebaseConfig).some(v => !v || v.includes('REPLACE_ME'))) {
         const button = document.createElement('button'); button.type = 'button'; button.className = status === 'approved' ? 'primary' : 'secondary';
         button.textContent = status === 'approved' ? 'Approve' : row.status === 'approved' ? 'Revoke access' : 'Deny';
         button.onclick = async () => {
-          if (!confirm(`${button.textContent} for ${row.email}?`)) return;
+          const verb = status === 'approved' ? 'Approve portal access' : row.status === 'approved' ? 'Revoke portal access' : 'Deny portal access';
+          if (!confirm(`${verb} for ${row.email}?`)) return;
           actions.querySelectorAll('button').forEach(b => b.disabled = true); error('');
           try {
             // Transaction prevents overwriting another administrator's newer decision.
@@ -122,6 +140,7 @@ if (Object.values(firebaseConfig).some(v => !v || v.includes('REPLACE_ME'))) {
     }
   }
   $('status-filter').onchange = renderRequests;
+  $('request-search').oninput = renderRequests;
   $('setup-applications').onclick = async () => {
     if (adminState !== true || !user) return;
     const myEpoch = epoch;
@@ -170,13 +189,15 @@ if (Object.values(firebaseConfig).some(v => !v || v.includes('REPLACE_ME'))) {
         if (snapshot.metadata.fromCache) { gate('Connecting securely','Your access will be checked when the connection is restored.'); return; }
         if (!snapshot.exists()) {
           gate('Set up your applications', adminState === true
-            ? 'Load Property Management, Inventory Management, Accounting Books Online and Document Management into your portal.'
+            ? 'Load Property Management, Inventory Management, Candoni Books Online and Document Management into your portal.'
             : 'The administrator still needs to configure the applications.');
           show('setup-applications', adminState === true);
           return;
         }
         show('setup-applications', false);
         renderDirectory(snapshot.data()); show('gate',false); show('portal',true);
+        const first = (user.displayName || '').trim().split(/\s+/)[0];
+        $('portal-title').textContent = first ? `Welcome, ${first}` : 'Applications';
       },e => { if(myEpoch === epoch) fail(e); });
     }
   }

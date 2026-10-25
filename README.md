@@ -48,7 +48,7 @@ Local preview must use HTTP, not a `file://` URL: run `python -m http.server 800
 
 1. In Firebase Authentication → Users, find **npp@mgocandoniaccounting.org** and copy that account’s UID. Verify the exact email before proceeding.
 2. In Firestore, create collection `admins`, document ID equal to that UID, with a boolean field `enabled` set to `true`.
-3. Reload the portal and click **Set up applications**. This creates `portal/directory` with the four supplied applications, including **Accounting Books Online**. Only an authenticated administrator can perform this first-time setup; existing directory data is never overwritten. Publish the UPDATED `firestore.rules` before clicking this button.
+3. Reload the portal and click **Set up applications**. This creates `portal/directory` with the four supplied applications, including **Candoni Books Online**. Only an authenticated administrator can perform this first-time setup; existing directory data is never overwritten. Publish the UPDATED `firestore.rules` before clicking this button.
 4. Reload the portal. That administrator can now approve or deny ordinary staff from the application page. The administrator's own user request can remain pending in Firestore: administrator authorization is independent of that status. The portal excludes your own account from the review queue.
 
 **Script option for a project operator:**

@@ -64,13 +64,17 @@
     #account-email { overflow-wrap:anywhere; }
     .error { padding:15px; border:1px solid #e6c5c5; color:#8a3030; background:#fff6f6; border-radius:8px; }
     #admin { margin-top:35px; border-top:1px solid var(--line); }
+    .admin-tools { display:flex; gap:12px; align-items:center; flex-wrap:wrap; font-size:14px; }
+    input[type=search] { font:inherit; font-size:14px; padding:8px 10px; width:230px; max-width:100%; border:1px solid var(--line); background:white; color:var(--ink); border-radius:5px; }
+    .section-head .badge { display:inline-block; min-width:22px; margin-left:6px; padding:1px 7px; border-radius:11px; background:var(--blue); color:#fff; font-size:12px; text-align:center; vertical-align:1px; }
+    .visually-hidden { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
     select { padding:8px; margin-left:8px; border:1px solid var(--line); background:white; color:var(--ink); border-radius:5px; }
     .requests { display:grid; gap:10px; margin-top:16px; }
     .request { display:flex; flex-wrap:wrap; justify-content:space-between; gap:18px; padding:20px; border:1px solid var(--line); background:white; border-radius:8px; }
     .request-person { min-width:0; overflow-wrap:anywhere; }
     .request-person p { margin:2px 0; font-size:14px; color:var(--muted); }
     .request-actions { display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
-    @media(max-width:650px) { .header-inner { flex-wrap:wrap; } #account { justify-content:flex-start; } .gate { padding:26px 20px; margin:10px auto; } }
+    @media(max-width:650px) { .header-inner { flex-wrap:wrap; } #account { justify-content:flex-start; } #admin .section-head { flex-wrap:wrap; } input[type=search] { width:100%; } .search { flex:1 1 100%; } .gate { padding:26px 20px; margin:10px auto; } }
   </style>
 </head>
 <body>
@@ -95,14 +99,19 @@
         </section>
         <p id="error-message" class="error" role="alert" hidden></p>
         <section id="portal" hidden>
-        <h1>Applications</h1>
+        <h1 id="portal-title">Applications</h1>
         <p class="intro">Select a module to open your workspace.</p>
-        <div class="section-head"><h2>Municipal operations</h2><span>4 applications</span></div>
+        <div class="section-head"><h2>Municipal operations</h2><span id="app-count"></span></div>
         <div class="apps" id="apps"></div>
         <p class="note" id="new-tab">Systems open in a new tab. Sign in using your account for each system.</p>
         </section>
         <section id="admin" hidden aria-labelledby="admin-title">
-          <div class="section-head"><h2 id="admin-title">Access approvals</h2><label>Show <select id="status-filter"><option value="pending">Pending</option><option value="approved">Approved</option><option value="denied">Denied</option></select></label></div>
+          <div class="section-head"><h2 id="admin-title">Access approvals <span id="pending-badge" class="badge" hidden></span></h2>
+            <div class="admin-tools">
+              <label class="search"><span class="visually-hidden">Search by name or email</span><input id="request-search" type="search" placeholder="Search name or email" autocomplete="off"></label>
+              <label>Show <select id="status-filter"><option value="pending">Pending</option><option value="approved">Approved</option><option value="denied">Denied</option></select></label>
+            </div>
+          </div>
           <p class="note">You are signed in as an administrator. Your account does not need approval. Review other users below.</p>
           <p id="admin-message" role="status"></p>
           <div id="requests" class="requests"></div>
