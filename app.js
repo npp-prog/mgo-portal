@@ -4,7 +4,7 @@ const $ = id => document.getElementById(id);
 const show = (id, value) => { $(id).hidden = !value; };
 const plural = (n, word) => `${n} ${word}${n === 1 ? '' : 's'}`;
 // Older directories were seeded with non-matching ids; fall back to the module code.
-const iconAliases = { PMS:'property', PIMS:'property', IMS:'inventory', CBO:'accounting', DMS:'documents', TOSCAN:'toscan', FTS:'fts' };
+const iconAliases = { PMS:'property', PIMS:'property', IMS:'inventory', CBO:'accounting', DMS:'documents', TOSCAN:'toscan', FTS:'fts', ONLINE:'collections' };
 // Names give two initials; an email address gives the first letter of its local part.
 const initials = text => (text || '?').includes('@') ? text[0].toUpperCase()
   : text.trim().split(/\s+/).slice(0,2).map(w => w[0].toUpperCase()).join('');
@@ -83,7 +83,7 @@ if (Object.values(firebaseConfig).some(v => !v || v.includes('REPLACE_ME'))) {
       const title = document.createElement('h3'); title.textContent = module.title;
       const desc = document.createElement('p'); desc.className = 'description'; desc.textContent = module.description; desc.hidden = !module.description;
       const bottom = document.createElement('div'); bottom.className = 'card-bottom';
-      const domain = document.createElement('span'); domain.className = 'domain'; domain.textContent = url.hostname;
+      const domain = document.createElement('span'); domain.className = 'domain'; domain.textContent = domain.title = url.hostname;
       const launch = document.createElement('span'); launch.className = 'launch'; launch.setAttribute('aria-hidden','true');
       launch.innerHTML = `Open ${arrow}`; // Local, trusted SVG only.
       bottom.append(domain, launch); card.append(top, title, desc, bottom); fragment.append(card);

@@ -8,13 +8,6 @@
       "code": "PIMS"
     },
     {
-      "id": "inventory",
-      "title": "Inventory management",
-      "description": "Supplies, stock records and inventory.",
-      "url": "https://ims.mgocandoni.com/",
-      "code": "IMS"
-    },
-    {
       "id": "accounting",
       "title": "Candoni Books Online",
       "description": "Accounting records and financial reports.",
@@ -41,6 +34,13 @@
       "description": "",
       "url": "https://fts.mgocandoni.com/",
       "code": "FTS"
+    },
+    {
+      "id": "collections",
+      "title": "Online collections",
+      "description": "Online payments through GCash and LinkBiz.",
+      "url": "https://online.mgocandoni.com/",
+      "code": "ONLINE"
     }
   ]
 }
