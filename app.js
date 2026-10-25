@@ -4,7 +4,7 @@ const $ = id => document.getElementById(id);
 const show = (id, value) => { $(id).hidden = !value; };
 const plural = (n, word) => `${n} ${word}${n === 1 ? '' : 's'}`;
 // Older directories were seeded with non-matching ids; fall back to the module code.
-const iconAliases = { PMS:'property', IMS:'inventory', CBO:'accounting', DMS:'documents' };
+const iconAliases = { PMS:'property', PIMS:'property', IMS:'inventory', CBO:'accounting', DMS:'documents' };
 const error = message => { $('error-message').textContent = message; show('error-message', Boolean(message)); };
 function gate(title, message) {
   show('setup-applications', false); show('gate', true); show('portal', false); $('apps').replaceChildren();
@@ -77,7 +77,7 @@ if (Object.values(firebaseConfig).some(v => !v || v.includes('REPLACE_ME'))) {
       const code = document.createElement('span'); code.className = 'code'; code.textContent = module.code;
       top.append(icon, code);
       const title = document.createElement('h3'); title.textContent = module.title;
-      const desc = document.createElement('p'); desc.className = 'description'; desc.textContent = module.description;
+      const desc = document.createElement('p'); desc.className = 'description'; desc.textContent = module.description; desc.hidden = !module.description;
       const bottom = document.createElement('div'); bottom.className = 'card-bottom';
       const domain = document.createElement('span'); domain.className = 'domain'; domain.textContent = url.hostname;
       const launch = document.createElement('span'); launch.className = 'launch'; launch.textContent = '↗'; launch.setAttribute('aria-hidden','true');
@@ -189,7 +189,7 @@ if (Object.values(firebaseConfig).some(v => !v || v.includes('REPLACE_ME'))) {
         if (snapshot.metadata.fromCache) { gate('Connecting securely','Your access will be checked when the connection is restored.'); return; }
         if (!snapshot.exists()) {
           gate('Set up your applications', adminState === true
-            ? 'Load Property Management, Inventory Management, Candoni Books Online and Document Management into your portal.'
+            ? 'Load the municipal applications listed in directory.json into your portal.'
             : 'The administrator still needs to configure the applications.');
           show('setup-applications', adminState === true);
           return;
