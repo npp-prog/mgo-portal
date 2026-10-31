@@ -1,46 +1,61 @@
-# MGO Portal
+# MGO ERP
 
-Minimal white and blue launcher for the Municipal Government of Candoni. No sidebar and no sign-in: anyone who opens the page sees the municipal systems and can open them in a new tab. Each linked system handles its own sign-in and permissions.
+ERP-style front end for the Municipal Government of Candoni. A sidebar groups the municipal systems by department (Finance, Assets, Records, Programs); the dashboard lists them all, and each module has its own page with its details and an **Open** button. There is no sign-in: anyone can open the page. Each linked system keeps its own data, sign-in and permissions.
 
-The supplied Candoni seal appears in the header and browser tab. An SVG wrapper clips the original JPEG to its outer circular boundary, so the surrounding white corners are transparent.
+The supplied Candoni seal appears in the sidebar and browser tab. An SVG wrapper clips the original JPEG to its outer circular boundary, so the surrounding white corners are transparent.
 
 ## Files
 
 | File | Purpose |
 | --- | --- |
-| `index.html` | Page layout and styles, including night mode. |
-| `app.js` | Loads `directory.json`, builds the system cards and runs the night-mode button. |
-| `directory.json` | The list of applications shown on the page. |
-| `icons.js` | Card icons, keyed by module `id`. |
+| `index.html` | Page shell (sidebar, top bar) and styles, including night mode. |
+| `app.js` | Loads `directory.json`; builds the sidebar, dashboard, department and module pages; search, mobile menu and night mode. |
+| `directory.json` | Departments and modules shown in the ERP. |
+| `icons.js` | Module icons, keyed by module `id`. |
 | `candoni-seal.svg`, `favicon.svg` | Seal artwork. |
 
 No build step or npm install is needed.
 
+## Pages
+
+| Address | Page |
+| --- | --- |
+| `#/` | Dashboard: every module, grouped by department. |
+| `#/d/finance` | One department's modules. |
+| `#/m/cbo` | One module's page (the code in lowercase). |
+
+Press `/` to jump to the module search; Enter opens the first match.
+
 ## Night mode
 
-The round moon/sun button in the header switches between day and night mode. The visitor's choice is remembered in their browser; until they choose, the page follows their device's setting.
+The moon/sun button in the top bar switches between day and night mode. The visitor's choice is remembered in their browser; until they choose, the page follows their device's setting.
 
-## Edit the applications
+## Edit the modules
 
 Edit `directory.json`, commit and push. GitHub Pages publishes the change within a few minutes; reload with Ctrl+Shift+R.
 
-Each entry needs:
+`groups` sets the order of the departments. Each module needs:
 
 ```json
 {
-  "id": "collections",
-  "title": "Online collections",
-  "description": "Online payments through GCash and LinkBiz.",
-  "url": "https://online.mgocandoni.com/",
-  "code": "ONLINE"
+  "id": "toscan",
+  "group": "Programs",
+  "title": "Ten Outstanding Students of Candoni",
+  "short": "TOSCAN scholars",
+  "description": "Portal for TOSCAN scholars.",
+  "url": "https://toscan.mgocandoni.com/",
+  "code": "TOSCAN"
 }
 ```
 
+- `group` is the department. A department not listed in `groups` is added at the end.
+- `short` is optional: a shorter name for the sidebar when `title` is long.
 - `url` must start with `https://`; other links are skipped.
-- `description` may be empty (`""`); the card then shows only the title.
+- `description` may be empty (`""`).
 - `id` picks the icon from `icons.js`. An unknown `id` uses the document icon; add an icon to `icons.js` for a new system.
+- `code` must be unique; it forms the module's page address.
 
-Current systems: PIMS, CBO, DMS, TOSCAN and Online collections.
+Current modules: CBO and Online collections (Finance), PIMS (Assets), DMS (Records), TOSCAN (Programs).
 
 ## Publish
 
