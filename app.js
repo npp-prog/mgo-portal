@@ -1,7 +1,7 @@
 import { icons } from './icons.js';
 const $ = id => document.getElementById(id);
 // Older directories were seeded with non-matching ids; fall back to the module code.
-const iconAliases = { PMS:'property', PIMS:'property', IMS:'inventory', CBO:'accounting', DMS:'documents', TOSCAN:'toscan', FTS:'fts', ONLINE:'collections' };
+const iconAliases = { PMS:'property', PIMS:'property', IMS:'inventory', CBO:'accounting', DMS:'documents', TOSCAN:'toscan', ONLINE:'collections' };
 const arrow = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>';
 
 function renderDirectory(data) {
@@ -28,6 +28,24 @@ function renderDirectory(data) {
   $('apps').replaceChildren(fragment);
   $('app-count').textContent = $('apps').childElementCount;
 }
+
+// Night mode: the visitor's choice is remembered; without one, the device setting applies.
+const themeButton = $('theme-toggle');
+const systemDark = matchMedia('(prefers-color-scheme: dark)');
+const isDark = () => (document.documentElement.dataset.theme || (systemDark.matches ? 'dark' : 'light')) === 'dark';
+function syncThemeButton() {
+  const dark = isDark();
+  themeButton.title = dark ? 'Switch to day mode' : 'Switch to night mode';
+  $('theme-label').textContent = dark ? 'Day mode' : 'Night mode';
+}
+themeButton.onclick = () => {
+  const theme = isDark() ? 'light' : 'dark';
+  document.documentElement.dataset.theme = theme;
+  try { localStorage.setItem('mgo-theme', theme); } catch {}
+  syncThemeButton();
+};
+systemDark.addEventListener('change', syncThemeButton);
+syncThemeButton();
 
 const hour = new Date().getHours();
 $('portal-title').textContent = hour < 12 ? 'Good morning' : hour < 18 ? 'Good afternoon' : 'Good evening';
