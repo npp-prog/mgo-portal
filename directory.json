@@ -1,21 +1,38 @@
 {
+  "groups": [
+    "Finance",
+    "Assets",
+    "Records",
+    "Programs"
+  ],
   "modules": [
     {
-      "id": "property",
-      "title": "Property management",
-      "description": "Property records and asset accountability.",
-      "url": "https://pms.mgocandoni.com/",
-      "code": "PIMS"
-    },
-    {
       "id": "accounting",
+      "group": "Finance",
       "title": "Candoni Books Online",
       "description": "Accounting records and financial reports.",
       "url": "https://cbo.mgocandoni.com/",
       "code": "CBO"
     },
     {
+      "id": "collections",
+      "group": "Finance",
+      "title": "Online collections",
+      "description": "Online payments through GCash and LinkBiz.",
+      "url": "https://online.mgocandoni.com/",
+      "code": "ONLINE"
+    },
+    {
+      "id": "property",
+      "group": "Assets",
+      "title": "Property management",
+      "description": "Property records and asset accountability.",
+      "url": "https://pms.mgocandoni.com/",
+      "code": "PIMS"
+    },
+    {
       "id": "documents",
+      "group": "Records",
       "title": "Document management",
       "description": "Document routing and records management.",
       "url": "https://dms.mgocandoni.com/",
@@ -23,17 +40,11 @@
     },
     {
       "id": "toscan",
-      "title": "TOSCAN",
-      "description": "",
+      "group": "Programs",
+      "title": "Ten Outstanding Students of Candoni",
+      "description": "Portal for TOSCAN scholars.",
       "url": "https://toscan.mgocandoni.com/",
       "code": "TOSCAN"
-    },
-    {
-      "id": "collections",
-      "title": "Online collections",
-      "description": "Online payments through GCash and LinkBiz.",
-      "url": "https://online.mgocandoni.com/",
-      "code": "ONLINE"
     }
   ]
 }
