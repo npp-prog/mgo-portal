@@ -15,18 +15,17 @@ function renderDirectory(data) {
     const top = document.createElement('div'); top.className = 'card-top';
     const icon = document.createElement('span'); icon.className = 'icon';
     icon.innerHTML = icons[module.id] || icons[iconAliases[module.code]] || icons.documents; // Local, trusted SVG only.
-    const code = document.createElement('span'); code.className = 'code'; code.textContent = module.code;
-    top.append(icon, code);
-    const title = document.createElement('h3'); title.textContent = module.title;
+    const launch = document.createElement('span'); launch.className = 'launch';
+    launch.innerHTML = arrow; // Local, trusted SVG only.
+    top.append(icon, launch);
+    const title = document.createElement('h2'); title.textContent = module.title;
     const desc = document.createElement('p'); desc.className = 'description'; desc.textContent = module.description; desc.hidden = !module.description;
-    const bottom = document.createElement('div'); bottom.className = 'card-bottom';
+    const meta = document.createElement('div'); meta.className = 'meta';
+    const code = document.createElement('span'); code.className = 'code'; code.textContent = module.code;
     const domain = document.createElement('span'); domain.className = 'domain'; domain.textContent = domain.title = url.hostname;
-    const launch = document.createElement('span'); launch.className = 'launch'; launch.setAttribute('aria-hidden','true');
-    launch.innerHTML = `Open ${arrow}`; // Local, trusted SVG only.
-    bottom.append(domain, launch); card.append(top, title, desc, bottom); fragment.append(card);
+    meta.append(code, domain); card.append(top, title, desc, meta); fragment.append(card);
   }
   $('apps').replaceChildren(fragment);
-  $('app-count').textContent = $('apps').childElementCount;
 }
 
 // Night mode: the visitor's choice is remembered; without one, the device setting applies.
@@ -35,8 +34,8 @@ const systemDark = matchMedia('(prefers-color-scheme: dark)');
 const isDark = () => (document.documentElement.dataset.theme || (systemDark.matches ? 'dark' : 'light')) === 'dark';
 function syncThemeButton() {
   const dark = isDark();
-  themeButton.title = dark ? 'Switch to day mode' : 'Switch to night mode';
-  $('theme-label').textContent = dark ? 'Day mode' : 'Night mode';
+  const label = dark ? 'Switch to day mode' : 'Switch to night mode';
+  themeButton.title = label; themeButton.setAttribute('aria-label', label);
 }
 themeButton.onclick = () => {
   const theme = isDark() ? 'light' : 'dark';
@@ -46,10 +45,6 @@ themeButton.onclick = () => {
 };
 systemDark.addEventListener('change', syncThemeButton);
 syncThemeButton();
-
-const hour = new Date().getHours();
-$('portal-title').textContent = hour < 12 ? 'Good morning' : hour < 18 ? 'Good afternoon' : 'Good evening';
-$('today').textContent = new Date().toLocaleDateString(undefined, { weekday:'long', year:'numeric', month:'long', day:'numeric' });
 
 try {
   const response = await fetch('./directory.json', { cache:'no-cache' });
