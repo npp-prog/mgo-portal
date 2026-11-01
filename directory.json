@@ -54,6 +54,14 @@
       "description": "Official website of the Municipality of Candoni.",
       "url": "https://candoni.gov.ph/",
       "code": "WEB"
+    },
+    {
+      "id": "bettercandoni",
+      "group": "Public",
+      "title": "Better Candoni",
+      "description": "",
+      "url": "https://bettercandoni.mgocandoni.com/",
+      "code": "BETTER"
     }
   ]
 }

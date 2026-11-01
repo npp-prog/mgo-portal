@@ -7,7 +7,7 @@ const el = (tag, className, text) => {
   return node;
 };
 // Older directories used ids that do not match an icon; fall back to the module code.
-const iconAliases = { PMS:'property', PIMS:'property', IMS:'inventory', CBO:'accounting', DMS:'documents', TOSCAN:'toscan', ONLINE:'collections', WEB:'website' };
+const iconAliases = { PMS:'property', PIMS:'property', IMS:'inventory', CBO:'accounting', DMS:'documents', TOSCAN:'toscan', ONLINE:'collections', WEB:'website', BETTER:'bettercandoni' };
 const iconFor = m => icons[m.id] || icons[iconAliases[m.code]] || icons.documents; // Local, trusted SVG only.
 const slug = text => text.toLowerCase().replace(/[^a-z0-9]+/g, '-');
 let modules = [], groups = [], group = null;
