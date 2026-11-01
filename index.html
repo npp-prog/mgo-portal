@@ -4,34 +4,38 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#0d1724" media="(prefers-color-scheme: dark)">
-  <meta name="description" content="MGO ERP — finance, assets, records and program systems of the Municipal Government of Candoni in one place.">
-  <title>MGO ERP · Municipality of Candoni</title>
+  <meta name="theme-color" content="#111518" media="(prefers-color-scheme: dark)">
+  <meta name="description" content="MGO Portal — finance, assets, records and program systems of the Municipal Government of Candoni in one place.">
+  <title>MGO Portal · Municipality of Candoni</title>
   <link rel="icon" href="candoni-seal.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap">
   <script>try { const t = localStorage.getItem('mgo-theme'); if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t; } catch {}</script>
   <style>
+    /* Palette matched to the DMS sign-in page: slate blue accent (#3e6a80) on white. */
     :root {
       color-scheme:light;
-      --bg:#ffffff; --surface:#ffffff; --ink:#122b45; --muted:#5a6e83; --faint:#8696a8;
-      --line:#e6ecf2; --blue:#1f62a8; --blue-soft:#edf4fc; --glow:#1f62a814; --mark:#d9e9fb;
+      --bg:#ffffff; --surface:#ffffff; --ink:#14181c; --muted:#62676b; --faint:#8b9196;
+      --line:#e4e6e9; --blue:#3e6a80; --btn:#3e6a80; --blue-soft:#edf2f5; --fill:#5b889e; --glow:#3e6a8026; --mark:#d8e5ec;
       --bad:#a33b3b; --bad-soft:#fbeaea;
     }
     @media (prefers-color-scheme:dark) {
       :root:not([data-theme=light]) {
         color-scheme:dark;
-        --bg:#0d1724; --surface:#111e2e; --ink:#e6eef7; --muted:#a0b3c7; --faint:#71889f;
-        --line:#1f3247; --blue:#7db8f3; --blue-soft:#17304b; --glow:#7db8f31f; --mark:#24476d;
+        --bg:#111518; --surface:#171d21; --ink:#e9edf0; --muted:#a6b0b7; --faint:#7d8890;
+        --line:#263139; --blue:#93b9cc; --btn:#3e6a80; --blue-soft:#1d2d36; --fill:#5b889e; --glow:#00000066; --mark:#2c4655;
         --bad:#f19a9a; --bad-soft:#3d1e1e;
       }
     }
     :root[data-theme=dark] {
       color-scheme:dark;
-      --bg:#0d1724; --surface:#111e2e; --ink:#e6eef7; --muted:#a0b3c7; --faint:#71889f;
-      --line:#1f3247; --blue:#7db8f3; --blue-soft:#17304b; --glow:#7db8f31f; --mark:#24476d;
+      --bg:#111518; --surface:#171d21; --ink:#e9edf0; --muted:#a6b0b7; --faint:#7d8890;
+      --line:#263139; --blue:#93b9cc; --btn:#3e6a80; --blue-soft:#1d2d36; --fill:#5b889e; --glow:#00000066; --mark:#2c4655;
       --bad:#f19a9a; --bad-soft:#3d1e1e;
     }
     * { box-sizing:border-box; }
-    body { margin:0; background:var(--bg); color:var(--ink); font:16px/1.6 "Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; -webkit-font-smoothing:antialiased; transition:background-color .25s,color .25s; }
+    body { margin:0; background:var(--bg); color:var(--ink); font:16px/1.6 "Poppins",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; -webkit-font-smoothing:antialiased; transition:background-color .25s,color .25s; }
     [hidden] { display:none !important; }
     .visually-hidden { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
     .skip { position:fixed; top:12px; left:12px; padding:10px 16px; background:var(--surface); color:var(--ink); border-radius:8px; z-index:10; transform:translateY(-200%); }
@@ -54,8 +58,8 @@
     @media (prefers-color-scheme:dark) { :root:not([data-theme=light]) .theme-toggle .moon { display:none; } :root:not([data-theme=light]) .theme-toggle .sun { display:block; } }
 
     main { flex:1; padding-top:48px; padding-bottom:80px; }
-    .today { margin:0 0 6px; font-size:14px; font-weight:600; color:var(--blue); }
-    h1 { font-size:38px; font-weight:750; letter-spacing:-1.2px; line-height:1.12; margin:0 0 28px; }
+    .today { margin:0 0 8px; font-size:14px; font-weight:500; color:var(--blue); }
+    h1 { font-size:40px; font-weight:700; letter-spacing:-1px; line-height:1.15; margin:0 0 28px; }
 
     .search { position:relative; display:block; }
     .search > svg { position:absolute; left:18px; top:50%; transform:translateY(-50%); color:var(--faint); pointer-events:none; transition:color .15s; }
@@ -73,26 +77,21 @@
     .chips { display:flex; flex-wrap:wrap; gap:8px; margin:18px 0 28px; padding:0; list-style:none; }
     .chip { display:inline-flex; align-items:center; gap:7px; padding:7px 14px; font:inherit; font-size:14px; font-weight:550; color:var(--muted); background:transparent; border:1px solid var(--line); border-radius:999px; cursor:pointer; transition:color .15s,background-color .15s,border-color .15s; }
     .chip:hover { color:var(--ink); border-color:var(--blue); }
-    .chip[aria-pressed=true] { color:#fff; background:#1f62a8; border-color:#1f62a8; }
+    .chip[aria-pressed=true] { color:#fff; background:var(--btn); border-color:var(--btn); }
     .chip .n { font-size:12px; font-weight:700; opacity:.7; }
 
-    .apps { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; }
-    .app { --x:50%; --y:50%; position:relative; display:flex; flex-direction:column; min-width:0; padding:22px; color:inherit; text-decoration:none; background:var(--surface); border:1px solid var(--line); border-radius:16px; overflow:hidden; isolation:isolate; transition:border-color .2s,transform .2s; animation:rise .35s ease both; animation-delay:calc(var(--i, 0) * 40ms); }
-    .app::before { content:""; position:absolute; inset:0; z-index:-1; background:radial-gradient(320px circle at var(--x) var(--y), var(--glow), transparent 60%); opacity:0; transition:opacity .2s; }
-    .app:hover, .app:focus-visible { border-color:var(--blue); transform:translateY(-3px); }
-    .app:hover::before, .app:focus-visible::before { opacity:1; }
-    .app.first { border-color:var(--blue); }
+    .apps { display:grid; grid-template-columns:repeat(6,minmax(0,1fr)); gap:36px 12px; margin-top:8px; }
+    .app { display:flex; flex-direction:column; align-items:center; min-width:0; padding:6px 4px 10px; color:inherit; text-align:center; text-decoration:none; border-radius:16px; animation:rise .35s ease both; animation-delay:calc(var(--i, 0) * 45ms); }
     @keyframes rise { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:none; } }
-    .card-top { display:flex; align-items:center; justify-content:space-between; margin-bottom:18px; }
-    .icon { display:grid; place-items:center; width:44px; height:44px; border-radius:12px; background:var(--blue-soft); color:var(--blue); transition:transform .2s; }
-    .app:hover .icon { transform:scale(1.06); }
-    .launch { display:grid; place-items:center; width:32px; height:32px; border-radius:50%; color:var(--faint); transition:color .2s,background-color .2s,transform .2s; }
-    .launch svg { width:16px; height:16px; stroke-width:2; }
-    .app:hover .launch, .app:focus-visible .launch { color:#fff; background:#1f62a8; transform:translate(2px,-2px); }
-    .tag { margin:0 0 4px; font-size:12px; font-weight:650; letter-spacing:.3px; color:var(--blue); }
-    .app h2 { font-size:17px; font-weight:650; letter-spacing:-.2px; line-height:1.35; margin:0 0 6px; }
-    .description { color:var(--muted); font-size:14.5px; line-height:1.55; margin:0 0 18px; }
-    .domain { margin-top:auto; font-size:12.5px; color:var(--faint); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .circle { display:grid; place-items:center; width:96px; height:96px; margin-bottom:18px; border-radius:50%; background:var(--blue-soft); color:var(--ink); transition:transform .25s cubic-bezier(.3,1.6,.6,1),box-shadow .2s,background-color .2s; }
+    .circle svg { width:48px; height:48px; stroke-width:1.9; }
+    .circle .a { fill:var(--fill); }
+    .app:hover .circle, .app:focus-visible .circle { transform:translateY(-4px) scale(1.06); box-shadow:0 10px 24px var(--glow); }
+    .app.first .circle { box-shadow:0 0 0 3px var(--bg), 0 0 0 5px var(--blue); }
+    .label { font-size:17px; font-weight:600; line-height:1.4; letter-spacing:-.2px; text-wrap:balance; transition:color .2s; }
+    .app:hover .label, .app:focus-visible .label { color:var(--blue); }
+    .app:focus-visible { outline-offset:6px; }
+    .sub { margin-top:4px; font-size:12.5px; font-weight:500; letter-spacing:.4px; color:var(--faint); }
     mark { color:inherit; background:var(--mark); border-radius:3px; padding:0 1px; }
     .empty { grid-column:1 / -1; padding:48px 20px; text-align:center; color:var(--muted); border:1px dashed var(--line); border-radius:16px; }
     .empty p { margin:0; }
@@ -102,24 +101,27 @@
     .error { grid-column:1 / -1; padding:14px 16px; color:var(--bad); background:var(--bad-soft); border-radius:10px; }
 
     .foot { padding:24px 0 32px; border-top:1px solid var(--line); font-size:13px; color:var(--faint); }
+    .foot a { color:var(--blue); text-decoration:none; }
+    .foot a:hover { text-decoration:underline; }
 
-    @media(max-width:900px) { .apps { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+    @media(max-width:960px) { .apps { grid-template-columns:repeat(3,minmax(0,1fr)); } }
     @media(max-width:600px) {
       .wrap { padding-left:20px; padding-right:20px; }
       header .wrap { padding-top:18px; padding-bottom:18px; }
       .seal { width:34px; height:34px; }
       main { padding-top:20px; padding-bottom:48px; }
-      h1 { font-size:28px; margin-bottom:20px; }
+      h1 { font-size:27px; margin-bottom:20px; }
       .search input { font-size:16px; padding:14px 48px 14px 46px; }
       .search-hint { display:none; }
       .chips { flex-wrap:nowrap; overflow-x:auto; margin:14px -20px 20px; padding:0 20px 4px; scrollbar-width:none; }
       .chip { flex-shrink:0; }
-      .apps { grid-template-columns:1fr; gap:12px; }
-      .app { padding:20px; }
+      .apps { grid-template-columns:repeat(2,minmax(0,1fr)); gap:28px 12px; }
+      .circle { width:84px; height:84px; margin-bottom:14px; } .circle svg { width:42px; height:42px; }
+      .label { font-size:16px; }
     }
     @media(prefers-reduced-motion:reduce) {
       *, *::before { animation:none !important; transition:none !important; }
-      .app:hover, .app:focus-visible { transform:none; }
+      .app:hover .circle, .app:focus-visible .circle { transform:none; }
     }
   </style>
 </head>
@@ -128,14 +130,14 @@
   <div class="page">
     <header>
       <div class="wrap">
-        <div class="brand"><img class="seal" src="candoni-seal.svg" alt="Municipality of Candoni seal" width="38" height="38"><div><div class="brand-name">MGO ERP</div><div class="brand-sub">Municipal Government of Candoni</div></div></div>
+        <div class="brand"><img class="seal" src="candoni-seal.svg" alt="Municipality of Candoni seal" width="38" height="38"><div><div class="brand-name">MGO Portal</div><div class="brand-sub">Municipal Government of Candoni</div></div></div>
         <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Switch to night mode"><svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z"/></svg><svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.9 4.9l1.4 1.4m11.4 11.4 1.4 1.4M2 12h2m16 0h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button>
       </div>
     </header>
     <main id="main">
       <div class="wrap">
         <p class="today" id="today"></p>
-        <h1 id="greeting">Welcome</h1>
+        <h1>What would you like to do today?</h1>
         <label class="search">
           <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
           <input id="search" type="search" placeholder="Search systems" aria-label="Search systems" aria-describedby="results" autocomplete="off" spellcheck="false">
@@ -148,7 +150,7 @@
         <p class="hint"><span id="new-tab">Systems open in a new tab and use their own sign-in.</span><span id="enter-tip" hidden> Press Enter to open the highlighted one.</span></p>
       </div>
     </main>
-    <footer><div class="wrap"><div class="foot">© Municipal Government of Candoni</div></div></footer>
+    <footer><div class="wrap"><div class="foot">© Municipal Government of Candoni · <a href="https://candoni.gov.ph/" target="_blank" rel="noopener noreferrer">candoni.gov.ph</a></div></div></footer>
   </div>
   <noscript><p class="error wrap">JavaScript is required to show the systems. Please enable it and reload this page.</p></noscript>
   <script type="module" src="app.js"></script>

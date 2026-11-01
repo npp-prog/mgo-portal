@@ -7,9 +7,8 @@ const el = (tag, className, text) => {
   return node;
 };
 // Older directories used ids that do not match an icon; fall back to the module code.
-const iconAliases = { PMS:'property', PIMS:'property', IMS:'inventory', CBO:'accounting', DMS:'documents', TOSCAN:'toscan', ONLINE:'collections' };
+const iconAliases = { PMS:'property', PIMS:'property', IMS:'inventory', CBO:'accounting', DMS:'documents', TOSCAN:'toscan', ONLINE:'collections', WEB:'website' };
 const iconFor = m => icons[m.id] || icons[iconAliases[m.code]] || icons.documents; // Local, trusted SVG only.
-const arrow = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>';
 const slug = text => text.toLowerCase().replace(/[^a-z0-9]+/g, '-');
 let modules = [], groups = [], group = null;
 
@@ -31,8 +30,7 @@ systemDark.addEventListener('change', syncThemeButton);
 syncThemeButton();
 
 const now = new Date(), hour = now.getHours();
-$('greeting').textContent = hour < 12 ? 'Good morning' : hour < 18 ? 'Good afternoon' : 'Good evening';
-$('today').textContent = now.toLocaleDateString(undefined, { weekday:'long', month:'long', day:'numeric' });
+$('today').textContent = `${hour < 12 ? 'Good morning' : hour < 18 ? 'Good afternoon' : 'Good evening'} · ${now.toLocaleDateString(undefined, { weekday:'long', month:'long', day:'numeric' })}`;
 
 // Text with every match of the query wrapped in <mark>, built without innerHTML.
 function highlight(text, query) {
@@ -52,16 +50,13 @@ const matches = (m, query) => !query || `${m.title} ${m.code} ${m.description} $
 function card(m, query, index) {
   const url = new URL(m.url);
   const a = el('a', 'app'); a.href = url.href; a.target = '_blank'; a.rel = 'noopener noreferrer';
+  a.title = [m.description, url.hostname].filter(Boolean).join(' · ');
   a.setAttribute('aria-describedby', 'new-tab'); a.style.setProperty('--i', index);
-  const top = el('div', 'card-top');
-  const icon = el('span', 'icon'); icon.innerHTML = iconFor(m);
-  const launch = el('span', 'launch'); launch.innerHTML = arrow;
-  top.append(icon, launch);
-  const tag = el('p', 'tag'); tag.append(highlight(`${m.group} · ${m.code}`, query));
-  const title = el('h2'); title.append(highlight(m.title, query));
-  a.append(top, tag, title);
-  if (m.description) { const desc = el('p', 'description'); desc.append(highlight(m.description, query)); a.append(desc); }
-  a.append(el('span', 'domain', url.hostname));
+  const circle = el('span', 'circle'); circle.innerHTML = iconFor(m);
+  const label = el('span', 'label'); label.append(highlight(m.title, query));
+  const sub = el('span', 'sub'); sub.append(highlight(`${m.group} · ${m.code}`, query));
+  a.append(circle, label, sub);
+  if (m.description) a.append(el('span', 'visually-hidden', `. ${m.description}`));
   return a;
 }
 
@@ -112,13 +107,6 @@ document.addEventListener('keydown', e => {
     e.preventDefault(); $('search').focus();
   }
 });
-// Soft glow that follows the pointer across a card.
-$('apps').addEventListener('pointermove', e => {
-  const a = e.target.closest('.app'); if (!a) return;
-  const r = a.getBoundingClientRect();
-  a.style.setProperty('--x', `${e.clientX - r.left}px`); a.style.setProperty('--y', `${e.clientY - r.top}px`);
-});
-
 try {
   const response = await fetch('./directory.json', { cache:'no-cache' });
   if (!response.ok) throw new Error(`HTTP ${response.status}`);

@@ -3,7 +3,8 @@
     "Finance",
     "Assets",
     "Records",
-    "Programs"
+    "Programs",
+    "Public"
   ],
   "modules": [
     {
@@ -45,6 +46,14 @@
       "description": "Portal for TOSCAN scholars.",
       "url": "https://toscan.mgocandoni.com/",
       "code": "TOSCAN"
+    },
+    {
+      "id": "website",
+      "group": "Public",
+      "title": "Candoni LGU website",
+      "description": "Official website of the Municipality of Candoni.",
+      "url": "https://candoni.gov.ph/",
+      "code": "WEB"
     }
   ]
 }

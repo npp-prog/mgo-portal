@@ -1,10 +1,10 @@
-# MGO ERP
+# MGO Portal
 
 Minimal, interactive launcher for the municipal systems of the Municipal Government of Candoni. One page, no sidebar and no sign-in: anyone can open it. Each linked system keeps its own data, sign-in and permissions.
 
 - **Search** filters the systems as you type and highlights matches. Press `/` to jump to it, Enter to open the highlighted system, Esc to clear.
-- **Department filters** (All, Finance, Assets, Records, Programs) show counts. The choice is kept in the address, e.g. `#finance`, so a filtered view can be shared or bookmarked.
-- **Cards** open the system in a new tab.
+- **Department filters** (All, Finance, Assets, Records, Programs, Public) show counts. The choice is kept in the address, e.g. `#finance`, so a filtered view can be shared or bookmarked.
+- **Systems** appear as large icon circles with bold labels, like a "What would you like to do today?" quick-action row. Each opens in a new tab; hover shows its description.
 
 The supplied Candoni seal appears in the header and browser tab. An SVG wrapper clips the original JPEG to its outer circular boundary, so the surrounding white corners are transparent.
 
@@ -47,7 +47,7 @@ Edit `directory.json`, commit and push. GitHub Pages publishes the change within
 - `id` picks the icon from `icons.js`. An unknown `id` uses the document icon; add an icon to `icons.js` for a new system.
 - `code` is the short label shown on the card, e.g. `CBO`.
 
-Current systems: CBO and Online collections (Finance), PIMS (Assets), DMS (Records), TOSCAN (Programs).
+Current systems: CBO and Online collections (Finance), PIMS (Assets), DMS (Records), TOSCAN (Programs), Candoni LGU website (Public).
 
 ## Publish
 
