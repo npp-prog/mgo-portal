@@ -1,4 +1,4 @@
-# MGO ERP
+# MGO Portal
 
 Minimal, interactive launcher for the municipal systems of the Municipal Government of Candoni. One page, no sidebar and no sign-in: anyone can open it. Each linked system keeps its own data, sign-in and permissions.
 
