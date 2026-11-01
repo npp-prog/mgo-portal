@@ -53,7 +53,8 @@
       "title": "Candoni LGU website",
       "description": "Official website of the Municipality of Candoni.",
       "url": "https://candoni.gov.ph/",
-      "code": "WEB"
+      "code": "WEB",
+      "logo": "candoni-seal.svg"
     },
     {
       "id": "bettercandoni",
