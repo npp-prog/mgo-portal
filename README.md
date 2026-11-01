@@ -4,7 +4,7 @@ Minimal, interactive launcher for the municipal systems of the Municipal Governm
 
 - **Search** filters the systems as you type and highlights matches. Press `/` to jump to it, Enter to open the highlighted system, Esc to clear.
 - **Department filters** (All, Finance, Assets, Records, Programs, Public) show counts. The choice is kept in the address, e.g. `#finance`, so a filtered view can be shared or bookmarked.
-- **Cards** open the system in a new tab.
+- **Systems** appear as large icon circles with bold labels, like a "What would you like to do today?" quick-action row. Each opens in a new tab; hover shows its description.
 
 The supplied Candoni seal appears in the header and browser tab. An SVG wrapper clips the original JPEG to its outer circular boundary, so the surrounding white corners are transparent.
 
