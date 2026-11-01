@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#0d1724" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#111518" media="(prefers-color-scheme: dark)">
   <meta name="description" content="MGO Portal — finance, assets, records and program systems of the Municipal Government of Candoni in one place.">
   <title>MGO Portal · Municipality of Candoni</title>
   <link rel="icon" href="candoni-seal.svg" type="image/svg+xml">
@@ -13,24 +13,25 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap">
   <script>try { const t = localStorage.getItem('mgo-theme'); if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t; } catch {}</script>
   <style>
+    /* Palette matched to the DMS sign-in page: slate blue accent (#3e6a80) on white. */
     :root {
       color-scheme:light;
-      --bg:#ffffff; --surface:#ffffff; --ink:#122b45; --muted:#5a6e83; --faint:#8696a8;
-      --line:#e6ecf2; --blue:#1f62a8; --blue-soft:#eaf3fd; --fill:#4a90e2; --glow:#1f62a826; --mark:#d9e9fb;
+      --bg:#ffffff; --surface:#ffffff; --ink:#14181c; --muted:#62676b; --faint:#8b9196;
+      --line:#e4e6e9; --blue:#3e6a80; --btn:#3e6a80; --blue-soft:#edf2f5; --fill:#5b889e; --glow:#3e6a8026; --mark:#d8e5ec;
       --bad:#a33b3b; --bad-soft:#fbeaea;
     }
     @media (prefers-color-scheme:dark) {
       :root:not([data-theme=light]) {
         color-scheme:dark;
-        --bg:#0d1724; --surface:#111e2e; --ink:#e6eef7; --muted:#a0b3c7; --faint:#71889f;
-        --line:#1f3247; --blue:#7db8f3; --blue-soft:#17304b; --fill:#4a90e2; --glow:#00000066; --mark:#24476d;
+        --bg:#111518; --surface:#171d21; --ink:#e9edf0; --muted:#a6b0b7; --faint:#7d8890;
+        --line:#263139; --blue:#93b9cc; --btn:#3e6a80; --blue-soft:#1d2d36; --fill:#5b889e; --glow:#00000066; --mark:#2c4655;
         --bad:#f19a9a; --bad-soft:#3d1e1e;
       }
     }
     :root[data-theme=dark] {
       color-scheme:dark;
-      --bg:#0d1724; --surface:#111e2e; --ink:#e6eef7; --muted:#a0b3c7; --faint:#71889f;
-      --line:#1f3247; --blue:#7db8f3; --blue-soft:#17304b; --fill:#4a90e2; --glow:#00000066; --mark:#24476d;
+      --bg:#111518; --surface:#171d21; --ink:#e9edf0; --muted:#a6b0b7; --faint:#7d8890;
+      --line:#263139; --blue:#93b9cc; --btn:#3e6a80; --blue-soft:#1d2d36; --fill:#5b889e; --glow:#00000066; --mark:#2c4655;
       --bad:#f19a9a; --bad-soft:#3d1e1e;
     }
     * { box-sizing:border-box; }
@@ -76,7 +77,7 @@
     .chips { display:flex; flex-wrap:wrap; gap:8px; margin:18px 0 28px; padding:0; list-style:none; }
     .chip { display:inline-flex; align-items:center; gap:7px; padding:7px 14px; font:inherit; font-size:14px; font-weight:550; color:var(--muted); background:transparent; border:1px solid var(--line); border-radius:999px; cursor:pointer; transition:color .15s,background-color .15s,border-color .15s; }
     .chip:hover { color:var(--ink); border-color:var(--blue); }
-    .chip[aria-pressed=true] { color:#fff; background:#1f62a8; border-color:#1f62a8; }
+    .chip[aria-pressed=true] { color:#fff; background:var(--btn); border-color:var(--btn); }
     .chip .n { font-size:12px; font-weight:700; opacity:.7; }
 
     .apps { display:grid; grid-template-columns:repeat(6,minmax(0,1fr)); gap:36px 12px; margin-top:8px; }
