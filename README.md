@@ -46,6 +46,7 @@ Edit `directory.json`, commit and push. GitHub Pages publishes the change within
 - `description` may be empty (`""`).
 - `id` picks the icon from `icons.js`. An unknown `id` uses the document icon; add an icon to `icons.js` for a new system.
 - `code` is the short label shown on the card, e.g. `CBO`.
+- `logo` is optional: an image file in this repository (e.g. `logos/toscan.png`) shown in the circle instead of the drawn icon. Use a square image with a transparent or white background, at least 128×128 pixels. Only relative paths are accepted.
 
 Current systems: CBO and Online collections (Finance), PIMS (Assets), DMS (Records), TOSCAN (Programs), Candoni LGU website and Better Candoni (Public).
 

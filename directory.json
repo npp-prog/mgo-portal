@@ -45,7 +45,8 @@
       "title": "Ten Outstanding Students of Candoni",
       "description": "Portal for TOSCAN scholars.",
       "url": "https://toscan.mgocandoni.com/",
-      "code": "TOSCAN"
+      "code": "TOSCAN",
+      "logo": "logos/toscan.png"
     },
     {
       "id": "website",
@@ -53,7 +54,8 @@
       "title": "Candoni LGU website",
       "description": "Official website of the Municipality of Candoni.",
       "url": "https://candoni.gov.ph/",
-      "code": "WEB"
+      "code": "WEB",
+      "logo": "candoni-seal.svg"
     },
     {
       "id": "bettercandoni",
@@ -61,7 +63,8 @@
       "title": "Better Candoni",
       "description": "",
       "url": "https://bettercandoni.mgocandoni.com/",
-      "code": "BETTER"
+      "code": "BETTER",
+      "logo": "logos/bettergov.svg"
     }
   ]
 }

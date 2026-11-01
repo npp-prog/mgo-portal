@@ -52,7 +52,13 @@ function card(m, query, index) {
   const a = el('a', 'app'); a.href = url.href; a.target = '_blank'; a.rel = 'noopener noreferrer';
   a.title = [m.description, url.hostname].filter(Boolean).join(' · ');
   a.setAttribute('aria-describedby', 'new-tab'); a.style.setProperty('--i', index);
-  const circle = el('span', 'circle'); circle.innerHTML = iconFor(m);
+  const circle = el('span', 'circle');
+  if (m.logo) {
+    // Image logos are files in this repository; the label already names the system, so alt is empty.
+    const img = el('img'); img.src = m.logo; img.alt = ''; img.width = img.height = 64; img.loading = 'lazy';
+    img.onerror = () => { circle.innerHTML = iconFor(m); };
+    circle.classList.add('has-logo'); circle.append(img);
+  } else circle.innerHTML = iconFor(m);
   const label = el('span', 'label'); label.append(highlight(m.title, query));
   const sub = el('span', 'sub'); sub.append(highlight(`${m.group} · ${m.code}`, query));
   a.append(circle, label, sub);
@@ -112,7 +118,8 @@ try {
   if (!response.ok) throw new Error(`HTTP ${response.status}`);
   const data = await response.json();
   modules = (data.modules || []).filter(m => { try { return new URL(m.url).protocol === 'https:'; } catch { return false; } })
-    .map(m => ({ ...m, group: m.group || 'Other' }));
+    // Logos must be relative paths to files in this repository.
+    .map(m => ({ ...m, group: m.group || 'Other', logo: typeof m.logo === 'string' && /^[\w./-]+$/.test(m.logo) && !m.logo.includes('..') ? m.logo : undefined }));
   groups = [...new Set([...(data.groups || []), ...modules.map(m => m.group)])].filter(g => modules.some(m => m.group === g));
   const groupFromHash = () => groups.find(g => `#${slug(g)}` === location.hash) || null;
   group = groupFromHash(); render();
