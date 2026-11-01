@@ -47,7 +47,7 @@ Edit `directory.json`, commit and push. GitHub Pages publishes the change within
 - `id` picks the icon from `icons.js`. An unknown `id` uses the document icon; add an icon to `icons.js` for a new system.
 - `code` is the short label shown on the card, e.g. `CBO`.
 
-Current systems: CBO and Online collections (Finance), PIMS (Assets), DMS (Records), TOSCAN (Programs), Candoni LGU website (Public).
+Current systems: CBO and Online collections (Finance), PIMS (Assets), DMS (Records), TOSCAN (Programs), Candoni LGU website and Better Candoni (Public).
 
 ## Publish
 
@@ -57,6 +57,6 @@ Local preview must use HTTP, not a `file://` URL: run `python -m http.server 800
 
 ## Security
 
-The page, `directory.json` and every application address are public. The portal is only a set of links: it does not control who can use PIMS, CBO, DMS, TOSCAN or Online collections. Each of those systems must enforce its own sign-in and authorization.
+The page, `directory.json` and every application address are public. The portal is only a set of links: it does not control who can use PIMS, CBO, DMS, TOSCAN Online collections or Better Candoni. Each of those systems must enforce its own sign-in and authorization.
 
 Do not put passwords, tokens or other secrets in `directory.json` or anywhere in this repository.

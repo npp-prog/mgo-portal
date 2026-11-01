@@ -26,7 +26,7 @@
     {
       "id": "property",
       "group": "Assets",
-      "title": "Property management",
+      "title": "Property and Inventory Management",
       "description": "Property records and asset accountability.",
       "url": "https://pms.mgocandoni.com/",
       "code": "PIMS"
@@ -54,6 +54,14 @@
       "description": "Official website of the Municipality of Candoni.",
       "url": "https://candoni.gov.ph/",
       "code": "WEB"
+    },
+    {
+      "id": "bettercandoni",
+      "group": "Public",
+      "title": "Better Candoni",
+      "description": "",
+      "url": "https://bettercandoni.mgocandoni.com/",
+      "code": "BETTER"
     }
   ]
 }
