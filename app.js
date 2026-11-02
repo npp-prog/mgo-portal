@@ -9,8 +9,7 @@ const el = (tag, className, text) => {
 // Older directories used ids that do not match an icon; fall back to the module code.
 const iconAliases = { PMS:'property', PIMS:'property', IMS:'inventory', CBO:'accounting', DMS:'documents', TOSCAN:'toscan', ONLINE:'collections', WEB:'website', BETTER:'bettercandoni' };
 const iconFor = m => icons[m.id] || icons[iconAliases[m.code]] || icons.documents; // Local, trusted SVG only.
-const slug = text => text.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-let modules = [], groups = [], group = null;
+let modules = [];
 
 // Night mode: the visitor's choice is remembered; without one, the device setting applies.
 const themeButton = $('theme-toggle');
@@ -66,29 +65,16 @@ function card(m, query, index) {
   return a;
 }
 
-function renderChips(query) {
-  const list = $('chips'); list.replaceChildren();
-  for (const name of [null, ...groups]) {
-    const count = modules.filter(m => (!name || m.group === name) && matches(m, query)).length;
-    const li = el('li'), chip = el('button', 'chip');
-    chip.type = 'button'; chip.setAttribute('aria-pressed', String(group === name));
-    chip.append(name || 'All', el('span', 'n', count));
-    chip.onclick = () => { group = name; history.replaceState(null, '', name ? `#${slug(name)}` : location.pathname + location.search); render(); };
-    li.append(chip); list.append(li);
-  }
-}
-
 function render() {
   const query = $('search').value.trim().toLowerCase();
   $('clear').hidden = !query; $('search-hint').hidden = Boolean(query);
-  renderChips(query);
-  const shown = modules.filter(m => (!group || m.group === group) && matches(m, query));
+  const shown = modules.filter(m => matches(m, query));
   const apps = $('apps');
   if (!shown.length) {
     const empty = el('div', 'empty');
-    empty.append(el('p', '', query ? `No systems match “${$('search').value.trim()}”${group ? ` in ${group}` : ''}.` : 'No systems in this department.'));
+    empty.append(el('p', '', `No systems match “${$('search').value.trim()}”.`));
     const reset = el('button', '', 'Show all systems'); reset.type = 'button';
-    reset.onclick = () => { $('search').value = ''; group = null; history.replaceState(null, '', location.pathname + location.search); render(); $('search').focus(); };
+    reset.onclick = () => { $('search').value = ''; render(); $('search').focus(); };
     empty.append(reset); apps.replaceChildren(empty);
   } else {
     apps.replaceChildren(...shown.map((m, i) => card(m, query, i)));
@@ -120,10 +106,7 @@ try {
   modules = (data.modules || []).filter(m => { try { return new URL(m.url).protocol === 'https:'; } catch { return false; } })
     // Logos must be relative paths to files in this repository.
     .map(m => ({ ...m, group: m.group || 'Other', logo: typeof m.logo === 'string' && /^[\w./-]+$/.test(m.logo) && !m.logo.includes('..') ? m.logo : undefined }));
-  groups = [...new Set([...(data.groups || []), ...modules.map(m => m.group)])].filter(g => modules.some(m => m.group === g));
-  const groupFromHash = () => groups.find(g => `#${slug(g)}` === location.hash) || null;
-  group = groupFromHash(); render();
-  addEventListener('hashchange', () => { group = groupFromHash(); render(); });
+  render();
 } catch {
   const message = el('p', 'error', 'The system list could not be loaded. Check your internet connection and reload this page.');
   message.setAttribute('role', 'alert');

@@ -3,7 +3,6 @@
 Minimal, interactive launcher for the municipal systems of the Municipal Government of Candoni. One page, no sidebar and no sign-in: anyone can open it. Each linked system keeps its own data, sign-in and permissions.
 
 - **Search** filters the systems as you type and highlights matches. Press `/` to jump to it, Enter to open the highlighted system, Esc to clear.
-- **Department filters** (All, Finance, Assets, Records, Programs, Public) show counts. The choice is kept in the address, e.g. `#finance`, so a filtered view can be shared or bookmarked.
 - **Systems** appear as large icon circles with bold labels, like a "What would you like to do today?" quick-action row. Each opens in a new tab; hover shows its description.
 
 The supplied Candoni seal appears in the header and browser tab. An SVG wrapper clips the original JPEG to its outer circular boundary, so the surrounding white corners are transparent.
@@ -13,7 +12,7 @@ The supplied Candoni seal appears in the header and browser tab. An SVG wrapper 
 | File | Purpose |
 | --- | --- |
 | `index.html` | Page layout and styles, including night mode. |
-| `app.js` | Loads `directory.json`; builds the cards, search, department filters and night-mode button. |
+| `app.js` | Loads `directory.json`; builds the system circles, search and night-mode button. |
 | `directory.json` | Departments and systems shown on the page. |
 | `icons.js` | System icons, keyed by `id`. |
 | `candoni-seal.svg`, `favicon.svg` | Seal artwork. |
@@ -28,7 +27,7 @@ The moon/sun button in the header switches between day and night mode. The visit
 
 Edit `directory.json`, commit and push. GitHub Pages publishes the change within a few minutes; reload with Ctrl+Shift+R.
 
-`groups` sets the order of the department filters. Each system needs:
+Systems appear in the order listed. Each system needs:
 
 ```json
 {
@@ -41,7 +40,7 @@ Edit `directory.json`, commit and push. GitHub Pages publishes the change within
 }
 ```
 
-- `group` is the department. A department not listed in `groups` is added at the end.
+- `group` is the department, shown under the name and matched by search.
 - `url` must start with `https://`; other links are skipped.
 - `description` may be empty (`""`).
 - `id` picks the icon from `icons.js`. An unknown `id` uses the document icon; add an icon to `icons.js` for a new system.

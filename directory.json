@@ -1,11 +1,4 @@
 {
-  "groups": [
-    "Finance",
-    "Assets",
-    "Records",
-    "Programs",
-    "Public"
-  ],
   "modules": [
     {
       "id": "accounting",
