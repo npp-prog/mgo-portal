@@ -61,7 +61,7 @@
     .today { margin:0 0 8px; font-size:14px; font-weight:500; color:var(--blue); }
     h1 { font-size:40px; font-weight:700; letter-spacing:-1px; line-height:1.15; margin:0 0 28px; }
 
-    .search { position:relative; display:block; }
+    .search { position:relative; display:block; margin-bottom:36px; }
     .search > svg { position:absolute; left:18px; top:50%; transform:translateY(-50%); color:var(--faint); pointer-events:none; transition:color .15s; }
     .search input { width:100%; padding:16px 92px 16px 50px; font:inherit; font-size:17px; color:var(--ink); background:var(--surface); border:1px solid var(--line); border-radius:14px; outline:none; transition:border-color .15s,box-shadow .15s; -webkit-appearance:none; }
     .search input::placeholder { color:var(--faint); }
@@ -74,11 +74,6 @@
     .clear:hover { color:var(--ink); background:var(--blue-soft); }
     .clear svg { width:16px; height:16px; }
 
-    .chips { display:flex; flex-wrap:wrap; gap:8px; margin:18px 0 28px; padding:0; list-style:none; }
-    .chip { display:inline-flex; align-items:center; gap:7px; padding:7px 14px; font:inherit; font-size:14px; font-weight:550; color:var(--muted); background:transparent; border:1px solid var(--line); border-radius:999px; cursor:pointer; transition:color .15s,background-color .15s,border-color .15s; }
-    .chip:hover { color:var(--ink); border-color:var(--blue); }
-    .chip[aria-pressed=true] { color:#fff; background:var(--btn); border-color:var(--btn); }
-    .chip .n { font-size:12px; font-weight:700; opacity:.7; }
 
     .apps { display:grid; grid-template-columns:repeat(7,minmax(0,1fr)); gap:36px 12px; margin-top:8px; }
     .app { display:flex; flex-direction:column; align-items:center; min-width:0; padding:6px 4px 10px; color:inherit; text-align:center; text-decoration:none; border-radius:16px; animation:rise .35s ease both; animation-delay:calc(var(--i, 0) * 45ms); }
@@ -115,8 +110,6 @@
       h1 { font-size:27px; margin-bottom:20px; }
       .search input { font-size:16px; padding:14px 48px 14px 46px; }
       .search-hint { display:none; }
-      .chips { flex-wrap:nowrap; overflow-x:auto; margin:14px -20px 20px; padding:0 20px 4px; scrollbar-width:none; }
-      .chip { flex-shrink:0; }
       .apps { grid-template-columns:repeat(2,minmax(0,1fr)); gap:28px 12px; }
       .circle { width:84px; height:84px; margin-bottom:14px; } .circle svg { width:42px; height:42px; } .circle img { width:56px; height:56px; }
       .label { font-size:16px; }
@@ -146,7 +139,6 @@
           <span class="search-hint" id="search-hint" aria-hidden="true">Press <kbd>/</kbd></span>
           <button class="clear" id="clear" type="button" aria-label="Clear search" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
         </label>
-        <ul class="chips" id="chips" aria-label="Filter by department"></ul>
         <p class="visually-hidden" id="results" role="status" aria-live="polite"></p>
         <div class="apps" id="apps"><p class="hint">Loading systems…</p></div>
         <p class="hint"><span id="new-tab">Systems open in a new tab and use their own sign-in.</span><span id="enter-tip" hidden> Press Enter to open the highlighted one.</span></p>
