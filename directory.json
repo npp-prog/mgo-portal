@@ -6,7 +6,8 @@
       "title": "Candoni Books Online",
       "description": "Accounting records and financial reports.",
       "url": "https://cbo.mgocandoni.com/",
-      "code": "CBO"
+      "code": "CBO",
+      "logo": "logos/cbo.png"
     },
     {
       "id": "collections",
