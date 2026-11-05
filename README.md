@@ -47,7 +47,7 @@ Systems appear in the order listed. Each system needs:
 - `code` is the short label shown on the card, e.g. `CBO`.
 - `logo` is optional: an image file in this repository (e.g. `logos/toscan.png`) shown in the circle instead of the drawn icon. Use a square image with a transparent or white background, at least 128×128 pixels. Only relative paths are accepted.
 
-Current systems: CBO and Online collections (Finance), PIMS (Assets), DMS (Records), TOSCAN (Programs), Candoni LGU website and Better Candoni (Public).
+Current systems: CBO and Online collections (Finance), Payroll (HR), PIMS (Assets), DMS and Archives (Records), TOSCAN (Programs), Candoni LGU website and Better Candoni (Public).
 
 ## Publish
 
@@ -57,6 +57,6 @@ Local preview must use HTTP, not a `file://` URL: run `python -m http.server 800
 
 ## Security
 
-The page, `directory.json` and every application address are public. The portal is only a set of links: it does not control who can use PIMS, CBO, DMS, TOSCAN Online collections or Better Candoni. Each of those systems must enforce its own sign-in and authorization.
+The page, `directory.json` and every application address are public. The portal is only a set of links: it does not control who can use PIMS, CBO, DMS, TOSCAN, Online collections, Payroll, Archives or Better Candoni. Each of those systems must enforce its own sign-in and authorization.
 
 Do not put passwords, tokens or other secrets in `directory.json` or anywhere in this repository.

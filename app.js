@@ -7,7 +7,7 @@ const el = (tag, className, text) => {
   return node;
 };
 // Older directories used ids that do not match an icon; fall back to the module code.
-const iconAliases = { PMS:'property', PIMS:'property', IMS:'inventory', CBO:'accounting', DMS:'documents', TOSCAN:'toscan', ONLINE:'collections', WEB:'website', BETTER:'bettercandoni' };
+const iconAliases = { PMS:'property', PIMS:'property', IMS:'inventory', CBO:'accounting', DMS:'documents', TOSCAN:'toscan', ONLINE:'collections', WEB:'website', BETTER:'bettercandoni', PAYROLL:'payroll', ARCHIVES:'archives' };
 const iconFor = m => icons[m.id] || icons[iconAliases[m.code]] || icons.documents; // Local, trusted SVG only.
 let modules = [];
 

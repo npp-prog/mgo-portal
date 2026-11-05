@@ -18,6 +18,14 @@
       "code": "ONLINE"
     },
     {
+      "id": "payroll",
+      "group": "HR",
+      "title": "Payroll",
+      "description": "",
+      "url": "https://payroll.mgocandoni.com/",
+      "code": "PAYROLL"
+    },
+    {
       "id": "property",
       "group": "Assets",
       "title": "Property and Inventory Management",
@@ -32,6 +40,14 @@
       "description": "Document routing and records management.",
       "url": "https://dms.mgocandoni.com/",
       "code": "DMS"
+    },
+    {
+      "id": "archives",
+      "group": "Records",
+      "title": "Archives",
+      "description": "",
+      "url": "https://archives.mgocandoni.com/",
+      "code": "ARCHIVES"
     },
     {
       "id": "toscan",
