@@ -23,7 +23,8 @@
       "title": "Payroll",
       "description": "",
       "url": "https://payroll.mgocandoni.com/",
-      "code": "PAYROLL"
+      "code": "PAYROLL",
+      "logo": "logos/payroll.png"
     },
     {
       "id": "property",
