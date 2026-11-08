@@ -49,7 +49,8 @@
       "title": "Archives",
       "description": "",
       "url": "https://archives.mgocandoni.com/",
-      "code": "ARCHIVES"
+      "code": "ARCHIVES",
+      "logo": "logos/archives.svg"
     },
     {
       "id": "toscan",
