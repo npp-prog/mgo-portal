@@ -40,7 +40,8 @@
       "title": "Document management",
       "description": "Document routing and records management.",
       "url": "https://dms.mgocandoni.com/",
-      "code": "DMS"
+      "code": "DMS",
+      "logo": "logos/dms.svg"
     },
     {
       "id": "archives",
