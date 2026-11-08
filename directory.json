@@ -23,7 +23,8 @@
       "title": "Payroll",
       "description": "",
       "url": "https://payroll.mgocandoni.com/",
-      "code": "PAYROLL"
+      "code": "PAYROLL",
+      "logo": "logos/payroll.png"
     },
     {
       "id": "property",
@@ -39,7 +40,8 @@
       "title": "Document management",
       "description": "Document routing and records management.",
       "url": "https://dms.mgocandoni.com/",
-      "code": "DMS"
+      "code": "DMS",
+      "logo": "logos/dms.svg"
     },
     {
       "id": "archives",
