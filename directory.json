@@ -32,7 +32,8 @@
       "title": "ClockUp",
       "description": "",
       "url": "https://clockup.mgocandoni.com/",
-      "code": "CLOCKUP"
+      "code": "CLOCKUP",
+      "logo": "logos/clockup.svg"
     },
     {
       "id": "property",
