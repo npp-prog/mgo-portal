@@ -27,6 +27,14 @@
       "logo": "logos/payroll.png"
     },
     {
+      "id": "clockup",
+      "group": "HR",
+      "title": "ClockUp",
+      "description": "",
+      "url": "https://clockup.mgocandoni.com/",
+      "code": "CLOCKUP"
+    },
+    {
       "id": "property",
       "group": "Assets",
       "title": "Property and Inventory Management",
